@@ -1,6 +1,6 @@
 import 'package:appbarbearia_flutter/api/ClienteApi.dart';
-import 'package:appbarbearia_flutter/model/Cliente.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
+import 'package:appbarbearia_flutter/model/UserClienteWrapper.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +21,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
   var _logradouro = TextEditingController();
   Estados _estado = Estados.AC;
 
-  Cliente cliente = new Cliente();
+  UserClienteWrapper clienteWrapper = new UserClienteWrapper();
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +40,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
               ),
               controller: _nome,
               onEditingComplete: (){
-                cliente.setNome(_nome.text);
+                clienteWrapper.cliente.setNome(_nome.text);
               },
             ),
             TextFormField(
@@ -51,8 +51,8 @@ class _CadastroClienteState extends State<CadastroCliente> {
               ),
               controller: _cpf,
               keyboardType: TextInputType.number,
-              onEditingComplete: (){
-                cliente.setCpf(_cpf.text);
+              onChanged: (cpf){
+                clienteWrapper.cliente.setCpf(cpf);
               },
             ),
             DateTimePickerFormField(
@@ -69,7 +69,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                     icon: Icon(Icons.calendar_today),
                   ),
                     onChanged: (dt) {
-                      cliente.setDataNascimento(dt);
+                      clienteWrapper.cliente.setDataNascimento(dt);
                       Text(DateFormat("dd-MM-yyyy").format(dt));
                     }
                 ),
@@ -85,8 +85,8 @@ class _CadastroClienteState extends State<CadastroCliente> {
                     hintText: "Cidade"
                   ),
                   controller: _cidade,
-                  onEditingComplete: (){
-                    cliente.setCidade(_cidade.text);
+                  onChanged: (cidade){
+                    clienteWrapper.cliente.setCidade(cidade);
                   },
                 ),
                 TextFormField(
@@ -97,7 +97,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                   ),
                   controller: _logradouro,
                   onEditingComplete: (){
-                    cliente.setEndereco(_logradouro.text);
+                    clienteWrapper.cliente.setEndereco(_logradouro.text);
                   },
                 ),
                   Row(
@@ -110,7 +110,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                       value: _estado,
                     onChanged: (Estados newValue) {
                       setState(() {
-                        cliente.setEstado(newValue);
+                        clienteWrapper.cliente.setEstado(newValue);
                         _estado = newValue;
                       });
                     },
@@ -122,7 +122,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                     )
                 ],
               ),
-               Row(
+                 Row(
                     children: <Widget>[
                       Expanded(
                     child: ButtonTheme(
@@ -131,7 +131,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                         child: Text("Cadastrar"), 
                         key: Key("_submitButton"),
                         onPressed: (){  
-                          ClienteApi.saveCliente(cliente);
+                          ClienteApi.saveCliente(clienteWrapper.cliente);
                         },
                         elevation: 3.0,
                         color: Colors.purple,

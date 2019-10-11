@@ -36,6 +36,7 @@ void main() async {
   ));
 }
 
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext buildContext){
@@ -125,8 +126,15 @@ class HomePage extends StatelessWidget {
              ),
              new Divider(),
              new ListTile(
-               title: new Text("Fecha essa barra que não faz nada"),
+               title: new Text("Logout"),
                trailing: new Icon(Icons.close),
+               onTap: () {
+                 authService.logout();
+                 Navigator.of(buildContext).pushReplacement(new MaterialPageRoute(
+                     builder: (BuildContext context)=>
+                      new LoginPage())
+                 );
+               },
              ), 
            ],
          ),

@@ -14,11 +14,7 @@ class AuthApiService {
 
   // Login
   Future<bool> obterToken(User user) async {
-    final directory = await getApplicationDocumentsDirectory();
-    File tokenFile = File("$directory.path/token.txt");
-//    print(user.username);
-//    print(user.password);
-//    print(json.encode(user));
+    File tokenFile = await localFile;
       if(token == null) {
       Future<http.Response> response = http.post(_BASE_URL + "autenticacao/obter-token", body: json.encode(user), headers: {"Content-Type": "application/json"});
       http.Response tokenResponse = await response;
@@ -33,10 +29,10 @@ class AuthApiService {
   }
 
   // Logout
-  Future<void> logout() async {
-    final directory = await getApplicationDocumentsDirectory();
-    File tokenFile = File("$directory.path/token.txt");
-    tokenFile.writeAsStringSync(null);
+  void logout() async {
+    File tokenFile = await localFile;
+    token = null;
+    tokenFile.writeAsStringSync('');
   }
 
   Future<bool> validarToken(String tokenToValidate) async {

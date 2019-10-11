@@ -1,5 +1,6 @@
 import 'package:appbarbearia_flutter/api/AuthApiService.dart';
 import 'package:appbarbearia_flutter/main.dart';
+import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
 import 'package:flutter/material.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:flutter/services.dart';
@@ -17,36 +18,39 @@ class _LoginPageState extends State<LoginPage> {
 
   User _user = new User();
 
-  TextEditingController eEmail = new TextEditingController();
+  TextEditingController eUsername = new TextEditingController();
   TextEditingController ePassword = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
-
 
     return new Scaffold(
     appBar: new AppBar(
       title: new Text('Login'),
     ),
     body: new ListView(
+      padding: EdgeInsets.all(15.0),
       children: <Widget>[
         TextFormField(
           keyboardType: TextInputType.emailAddress,
           autocorrect: false,
-          controller: eEmail,
-          onEditingComplete: () {
-            _user.username = eEmail.text;
+          decoration: const InputDecoration(
+            hintText: "Digite seu email",
+          ),
+          controller: eUsername,
+          onChanged: (username) {
+            _user.username = username;
           },
         ),
         TextFormField(
           autocorrect: false,
           obscureText: true,
+          decoration: const InputDecoration(
+              hintText: "Digite sua senha",
+          ),
           controller: ePassword,
-          onEditingComplete: () {
-            print(ePassword.text);
-            _user.password = ePassword.text;
-            print(_user.password);
+          onChanged: (password) {
+            _user.password = password;
           },
         ),
       Row(
@@ -63,22 +67,66 @@ class _LoginPageState extends State<LoginPage> {
             ),
           )
         ],
-      )
+      ),
+        Divider(),
+        Row(
+          children: <Widget>[
+            Center(
+              child: Text("Ainda não tem um cadastro?", textAlign: TextAlign.center,),
+            ),
+            ]
+          ),
+          Row(
+            children: <Widget> [
+              Expanded(
+              child: ButtonTheme(
+                child:
+                RaisedButton(
+                  child: Text("Fazer cadastro como cliente"),
+                  onPressed: () {
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (BuildContext context) => CadastroCliente()));
+                  },
+                ),
+              ),
+            ),
+            ]
+          ),
+          Row(
+            children: <Widget> [
+              Expanded(
+              child: ButtonTheme(
+                child:
+                RaisedButton(
+                  child: Text("Fazer cadastro como barbeiro"),
+//                  onPressed: () {
+//                    Navigator.push(
+//                        context, MaterialPageRoute(builder: (BuildContext context) => CadastroBarbeiro()));
+//                  },
+                ),
+              ),
+            ),
+          ],
+        ),
       ],
     ),
   );
-  }
+}
 
   void validateLogin(User user) async{
 //    print(user.username);
-    bool response = await authService.obterToken(user);
-    if(response){
-      Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-    } else {
-       Navigator.pushReplacement(
-      context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
-    }
+      Future<bool>fBool = authService.obterToken(user);
+      bool response = await fBool;
+      fBool.whenComplete(() {
+        if(response){
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+        } else {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
+        }
+    });
+
   }
 
 }
