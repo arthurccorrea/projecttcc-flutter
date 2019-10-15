@@ -1,10 +1,13 @@
 import 'package:appbarbearia_flutter/model/Estados.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-import 'dart:convert';
 import 'Barbeiro.dart';
 import 'Promocao.dart';
 import 'Servico.dart';
 
+part 'Barbearia.g.dart';
+
+@JsonSerializable()
 class Barbearia {
   String id;
   String nome;
@@ -39,21 +42,11 @@ class Barbearia {
     this.minutoAbertura = minutoAbertura;
   }
 
-  Barbearia.constructForJson({this.id, this.nome, this.descricao, this.cidade, this.endereco, this.estado, this.horaAbertura, this.minutoAbertura, this.horaFechamento, this.minutoFechamento});
+  // Barbearia.constructForJson({this.id, this.nome, this.descricao, this.cidade, this.endereco, this.estado, this.horaAbertura, this.minutoAbertura, this.horaFechamento, this.minutoFechamento});
 
-  factory Barbearia.fromJson(Map<String, dynamic> json){
-    return Barbearia.constructForJson(
-      id: json['id'], 
-      nome: json['nome'],
-      descricao: json['descricao'],
-      cidade: json['cidade'],
-      endereco: json['endereco'],
-      estado: json['estado'],
-      horaAbertura: json['horaAbertura'],
-      minutoAbertura: json['minutoAbertura'],
-      horaFechamento: json['horaFechamento'],
-      minutoFechamento: json['minutoFechamento']);
-  }
+  factory Barbearia.fromJson(Map<String, dynamic> json) => _$BarbeariaFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BarbeariaToJson(this);
 
   String getId() {
     return id;

@@ -1,5 +1,9 @@
 import 'package:appbarbearia_flutter/model/Role.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'User.g.dart';
+
+@JsonSerializable()
 class User {
   String id;
   String username;

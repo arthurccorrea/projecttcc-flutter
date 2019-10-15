@@ -13,7 +13,7 @@ class AuthApiService {
   String token;
 
   // Login
-  Future<bool> obterToken(User user) async {
+  Future<bool> gerarToken(User user) async {
     File tokenFile = await localFile;
       if(token == null) {
       Future<http.Response> response = http.post(_BASE_URL + "autenticacao/obter-token", body: json.encode(user), headers: {"Content-Type": "application/json"});
@@ -27,6 +27,16 @@ class AuthApiService {
 
     return false;
   }
+
+  Future<String> obterToken() async {
+    if(token == null || token.isEmpty){
+      File tokenFile = await localFile;
+      String fileToken = tokenFile.readAsStringSync();
+      return fileToken;
+    }
+    return token;
+  }
+
 
   // Logout
   void logout() async {

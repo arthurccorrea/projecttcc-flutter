@@ -10,6 +10,10 @@ AuthApiService authService = new AuthApiService();
 
 
 class LoginPage extends StatefulWidget {
+  final sucesso;
+
+  const LoginPage({Key key, this.sucesso}): super(key: key);
+
   @override
   State<StatefulWidget> createState() => new _LoginPageState();
 }
@@ -53,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
             _user.password = password;
           },
         ),
+
       Row(
         children: <Widget>[
           Expanded(
@@ -108,14 +113,21 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
+        showSnack(widget.sucesso),
       ],
     ),
   );
 }
 
+  Widget showSnack(bool sucesso){
+    if(sucesso){
+      return SnackBar(content: Text("Cadastro efetuado com sucesso"));
+    }
+  }
+
   void validateLogin(User user) async{
 //    print(user.username);
-      Future<bool>fBool = authService.obterToken(user);
+      Future<bool>fBool = authService.gerarToken(user);
       bool response = await fBool;
       fBool.whenComplete(() {
         if(response){

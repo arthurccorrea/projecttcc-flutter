@@ -1,6 +1,10 @@
 
 import 'package:appbarbearia_flutter/model/Estados.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'Cliente.g.dart';
+
+@JsonSerializable()
 class Cliente {
   String id;
   String cidade;
@@ -8,107 +12,19 @@ class Cliente {
   Estados estado;
   String nome;
   String cpf;
-  int telefone;
-  int celular;
+  String telefone;
+  String celular;
   //	URL
   String foto;
   DateTime dataNascimento;
   DateTime cadastro;
   DateTime alterado;
 
-  String getId() {
-    return id;
-  }
 
-  void setId(String id) {
-    this.id = id;
-  }
+  Cliente();
 
-  String getCidade() {
-    return cidade;
-  }
+  factory Cliente.fromJson(Map<String, dynamic> json) => _$ClienteFromJson(json);
 
-  void setCidade(String cidade) {
-    this.cidade = cidade;
-  }
+  Map<String, dynamic> toJson() => _$ClienteToJson(this);
 
-  String getEndereco(){
-    return endereco;
-  }
-
-  void setEndereco(String endereco){
-    this.endereco = endereco;
-  }
-
-  Estados getEstado(){
-    return estado;
-  }
-
-  void setEstado(Estados estado){
-    this.estado = estado;
-  }
-
-  String getNome() {
-    return nome;
-  }
-
-  void setNome(String nome) {
-    this.nome = nome;
-  }
-
-  String getCpf() {
-    return cpf;
-  }
-
-  void setCpf(String cpf) {
-    this.cpf = cpf;
-  }
-
-  int getTelefone() {
-    return telefone;
-  }
-
-  void setTelefone(int telefone) {
-    this.telefone = telefone;
-  }
-
-  int getCelular() {
-    return celular;
-  }
-
-  void setCelular(int celular) {
-    this.celular = celular;
-  }
-
-  String getFoto() {
-    return foto;
-  }
-
-  void setFoto(String foto) {
-    this.foto = foto;
-  }
-
-  DateTime getDataNascimento() {
-    return dataNascimento;
-  }
-
-  void setDataNascimento(DateTime dataNascimento) {
-    this.dataNascimento = dataNascimento;
-  }
-
-  DateTime getCadastro() {
-    return cadastro;
-  }
-
-  void setCadastro(DateTime cadastro) {
-    this.cadastro = cadastro;
-  }
-
-  DateTime getAlterado() {
-    return alterado;
-  }
-
-  void setAlterado(DateTime alterado) {
-    this.alterado = alterado;
-  }
 }
