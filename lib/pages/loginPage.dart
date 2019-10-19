@@ -1,18 +1,20 @@
 import 'package:appbarbearia_flutter/api/AuthApiService.dart';
 import 'package:appbarbearia_flutter/main.dart';
+import 'package:appbarbearia_flutter/pages/cadastroBarbeiro.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
 import 'package:flutter/material.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/scheduler.dart';
 
 AuthApiService authService = new AuthApiService();
 
 
 
 class LoginPage extends StatefulWidget {
-  final sucesso;
-
-  const LoginPage({Key key, this.sucesso}): super(key: key);
+  final bool sucesso;
+  final bool open;
+  const LoginPage({this.sucesso, this.open });
 
   @override
   State<StatefulWidget> createState() => new _LoginPageState();
@@ -20,125 +22,141 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  final GlobalKey<ScaffoldState> loginScaffold = new GlobalKey<ScaffoldState>();
   User _user = new User();
 
   TextEditingController eUsername = new TextEditingController();
   TextEditingController ePassword = new TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
-
+    var sucesso = widget.sucesso;
+    var open = widget.open;
     return new Scaffold(
-    appBar: new AppBar(
-      title: new Text('Login'),
-    ),
-    body: new ListView(
-      padding: EdgeInsets.all(15.0),
-      children: <Widget>[
-        TextFormField(
-          keyboardType: TextInputType.emailAddress,
-          autocorrect: false,
-          decoration: const InputDecoration(
-            hintText: "Digite seu email",
-          ),
-          controller: eUsername,
-          onChanged: (username) {
-            _user.username = username;
-          },
-        ),
-        TextFormField(
-          autocorrect: false,
-          obscureText: true,
-          decoration: const InputDecoration(
-              hintText: "Digite sua senha",
-          ),
-          controller: ePassword,
-          onChanged: (password) {
-            _user.password = password;
-          },
-        ),
-
-      Row(
+      key: loginScaffold,
+      appBar: new AppBar(
+        title: new Text('Login'),
+      ),
+      body: new ListView(
+        padding: EdgeInsets.all(15.0),
         children: <Widget>[
-          Expanded(
-            child: ButtonTheme(
-              child: 
-              RaisedButton(
-                child: Text("Log in"),
-                onPressed: () {
-                  validateLogin(_user);
-                },
-              ),
+          TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            autocorrect: false,
+            decoration: const InputDecoration(
+              hintText: "Digite seu email",
             ),
+            controller: eUsername,
+            onChanged: (username) {
+              _user.username = username;
+            },
+          ),
+          TextFormField(
+            autocorrect: false,
+            obscureText: true,
+            decoration: const InputDecoration(
+              hintText: "Digite sua senha",
+            ),
+            controller: ePassword,
+            onChanged: (password) {
+              _user.password = password;
+            },
+          ),
+
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: ButtonTheme(
+                  child:
+                  RaisedButton(
+                    child: Text("Log in"),
+                    onPressed: () {
+                      validateLogin(_user);
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+          Divider(),
+          Row(
+              children: <Widget>[
+                Center(
+                  child: Text(
+                    "Ainda não tem um cadastro?", textAlign: TextAlign.center,),
+                ),
+              ]
+          ),
+          Row(
+              children: <Widget>[
+                Expanded(
+                  child: ButtonTheme(
+                    child:
+                    RaisedButton(
+                      child: Text("Fazer cadastro como cliente"),
+                      onPressed: () {
+                        Navigator.push(
+                            context, MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                CadastroCliente()));
+                      },
+                    ),
+                  ),
+                ),
+              ]
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: ButtonTheme(
+                  child:
+                  RaisedButton(
+                    child: Text("Fazer cadastro como barbeiro"),
+                    onPressed: () {
+                      Navigator.push(
+                          context, MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              CadastroBarbeiro()));
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: sucesso && !open ? Text("Cadastro efetuado com sucesso",
+                  style: TextStyle(backgroundColor: Colors.green,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),) : Text(""),
+              )
+            ],
           )
         ],
       ),
-        Divider(),
-        Row(
-          children: <Widget>[
-            Center(
-              child: Text("Ainda não tem um cadastro?", textAlign: TextAlign.center,),
-            ),
-            ]
-          ),
-          Row(
-            children: <Widget> [
-              Expanded(
-              child: ButtonTheme(
-                child:
-                RaisedButton(
-                  child: Text("Fazer cadastro como cliente"),
-                  onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (BuildContext context) => CadastroCliente()));
-                  },
-                ),
-              ),
-            ),
-            ]
-          ),
-          Row(
-            children: <Widget> [
-              Expanded(
-              child: ButtonTheme(
-                child:
-                RaisedButton(
-                  child: Text("Fazer cadastro como barbeiro"),
-//                  onPressed: () {
-//                    Navigator.push(
-//                        context, MaterialPageRoute(builder: (BuildContext context) => CadastroBarbeiro()));
-//                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-        showSnack(widget.sucesso),
-      ],
-    ),
-  );
-}
-
-  Widget showSnack(bool sucesso){
-    if(sucesso){
-      return SnackBar(content: Text("Cadastro efetuado com sucesso"));
-    }
+    );
   }
 
-  void validateLogin(User user) async{
+  void validateLogin(User user) async {
 //    print(user.username);
-      Future<bool>fBool = authService.gerarToken(user);
-      bool response = await fBool;
-      fBool.whenComplete(() {
-        if(response){
+    Future<bool>fBool = authService.gerarToken(user);
+    bool response = await fBool;
+    await fBool.whenComplete(() async {
+      if (response) {
+        Future<User> fUser = authService.getUserByUsername(user.username);
+        User responseUser = await fUser;
+        fUser.whenComplete(() {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (BuildContext context) => HomePage()));
-        } else {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
-        }
+              context, MaterialPageRoute(
+              builder: (BuildContext context) => HomePage(user: responseUser, sucesso: true, open: true, mensagem: "")));
+        });
+      } else {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (BuildContext context) =>
+            LoginPage(open: true, sucesso: false)));
+      }
     });
-
   }
-
 }

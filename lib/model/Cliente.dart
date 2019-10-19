@@ -1,5 +1,6 @@
 
 import 'package:appbarbearia_flutter/model/Estados.dart';
+import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'Cliente.g.dart';
@@ -19,7 +20,7 @@ class Cliente {
   DateTime dataNascimento;
   DateTime cadastro;
   DateTime alterado;
-
+  String erros;
 
   Cliente();
 

@@ -1,9 +1,19 @@
 import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
+import 'package:appbarbearia_flutter/main.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
+import 'package:appbarbearia_flutter/model/User.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class CadastroBarbearia extends StatefulWidget {
+  final bool sucesso;
+  final bool open;
+  final String mensagem;
+  final User loggedUser;
+
+  const CadastroBarbearia({this.sucesso, this.open, this.mensagem,this.loggedUser});
+
   @override
   _CadastroBarbeariaState createState() => _CadastroBarbeariaState();
 }
@@ -21,6 +31,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
   int _horaFechamento = 1;
   int _minutoFechamento = 0;
   List<int> _minutos = [0,15,30,45];
+  final _cadastroBarbeariaKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +39,13 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
     return Scaffold(
       appBar: AppBar(title: Text("Cadastre sua barbearia")),
       body: Container(
+        child: Form(
+        key: _cadastroBarbeariaKey,
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.all(15.0),
           children: <Widget>[
+            !widget.open && !widget.sucesso ? _loadMensagemDeErro(widget.mensagem) : Text(""),
             TextFormField(
                   decoration: const InputDecoration(
                     icon: Icon(Icons.person),
@@ -39,8 +53,8 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hintText: "Insira o nome"
                   ),
                   controller: _nome,
-                  onEditingComplete: (){
-                    barbearia.setNome(_nome.text);
+                  onChanged: (nome){
+                    barbearia.setNome(nome);
                   },
                 ),
                 TextFormField(
@@ -50,8 +64,8 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hintText: "Descreva a sua barbearia"
                   ),
                   controller: _descricao,
-                  onEditingComplete: (){
-                    barbearia.setDescricao(_descricao.text);
+                  onChanged: (descricao){
+                    barbearia.setDescricao(descricao);
                   },
                 ),
                 Divider(),
@@ -66,8 +80,8 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hintText: "Cidade"
                   ),
                   controller: _cidade,
-                  onEditingComplete: (){
-                    barbearia.setCidade(_cidade.text);
+                  onChanged: (cidade){
+                    barbearia.setCidade(cidade);
                   },
                 ),
                 TextFormField(
@@ -77,8 +91,8 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hintText: "Logradouro"
                   ),
                   controller: _logradouro,
-                  onEditingComplete: (){
-                    barbearia.setEndereco(_logradouro.text);
+                  onChanged: (logradouro){
+                    barbearia.setEndereco(logradouro);
                   },
                 ),
                   Row(
@@ -190,8 +204,14 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                       child: RaisedButton(
                         child: Text("Cadastrar"), 
                         key: Key("_submitButton"),
-                        onPressed: (){  
-                          BarbeariaApi.saveBarbearia(barbearia);
+                        onPressed: () async {  
+                          Future<http.Response> fResponse = BarbeariaApi.saveBarbearia(barbearia);
+                          http.Response response = await fResponse;
+                          if(response.statusCode == 200){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HomePage(open: false, sucesso: true, mensagem: "Cadastro de barbearia foi efetuado com sucesso")));
+                          } else {
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new CadastroBarbearia(sucesso: false, open: false, mensagem: "Ops, algo deu errado, por favor, faça seu cadastro novamente",loggedUser: widget.loggedUser,)));
+                          }
                         },
                         elevation: 3.0,
                         color: Colors.purple,
@@ -204,6 +224,11 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
           ],  
         ),
       ),
+      ),
     );
   }
+}
+
+Widget _loadMensagemDeErro(String mensagem){
+  return Text(mensagem, style: TextStyle(backgroundColor: Colors.red, color: Colors.white),);
 }

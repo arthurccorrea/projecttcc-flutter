@@ -14,8 +14,8 @@ Cliente _$ClienteFromJson(Map<String, dynamic> json) {
     ..estado = _$enumDecodeNullable(_$EstadosEnumMap, json['estado'])
     ..nome = json['nome'] as String
     ..cpf = json['cpf'] as String
-    ..telefone = json['telefone']
-    ..celular = json['celular']
+    ..telefone = json['telefone'] as String
+    ..celular = json['celular'] as String
     ..foto = json['foto'] as String
     ..dataNascimento = json['dataNascimento'] == null
         ? null
@@ -25,7 +25,8 @@ Cliente _$ClienteFromJson(Map<String, dynamic> json) {
         : DateTime.parse(json['cadastro'] as String)
     ..alterado = json['alterado'] == null
         ? null
-        : DateTime.parse(json['alterado'] as String);
+        : DateTime.parse(json['alterado'] as String)
+    ..erros = json['erros'] as String;
 }
 
 Map<String, dynamic> _$ClienteToJson(Cliente instance) => <String, dynamic>{
@@ -40,7 +41,8 @@ Map<String, dynamic> _$ClienteToJson(Cliente instance) => <String, dynamic>{
       'foto': instance.foto,
       'dataNascimento': instance.dataNascimento?.toIso8601String(),
       'cadastro': instance.cadastro?.toIso8601String(),
-      'alterado': instance.alterado?.toIso8601String()
+      'alterado': instance.alterado?.toIso8601String(),
+      'erros': instance.erros
     };
 
 T _$enumDecode<T>(Map<T, dynamic> enumValues, dynamic source) {

@@ -61,7 +61,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
               decoration: const InputDecoration(
                 icon: Icon(Icons.mail),
                 hasFloatingPlaceholder: true,
-                hintText: "Digite seu email",
+                hintText: "Digite seu email (*)",
               ),
               controller: _eUsername,
               onChanged: (username) {
@@ -72,7 +72,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
               autocorrect: false,
               obscureText: true,
               decoration: const InputDecoration(
-                hintText: "Digite sua senha",
+                hintText: "Digite sua senha (*)",
                 icon: Icon(Icons.vpn_key),
               ),
               validator: (value) {
@@ -90,7 +90,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),
                 hasFloatingPlaceholder: true,
-                hintText: "Insira o nome"
+                hintText: "Insira o nome (*)"
               ),
               controller: _nome,
               validator: (value) {
@@ -107,7 +107,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),
                 hasFloatingPlaceholder: true,
-                hintText: "Insira o seu CPF"
+                hintText: "Insira o seu CPF (*)"
               ),
               controller: _cpf,
               keyboardType: TextInputType.number,
@@ -130,7 +130,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                   controller: _dataNascimento,
                   decoration: InputDecoration(
                     fillColor: Colors.redAccent,
-                    labelText: 'Data nascimento',
+                    labelText: 'Data nascimento (*)',
                     hasFloatingPlaceholder: true,
                     icon: Icon(Icons.calendar_today),
                   ),
@@ -154,7 +154,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                   decoration: const InputDecoration(
                     icon: Icon(Icons.location_city),
                     hasFloatingPlaceholder: true,
-                    hintText: "Cidade"
+                    hintText: "Cidade (*)"
                   ),
                   validator: (value) {
                     if(value.isEmpty){
@@ -171,7 +171,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                   decoration: const InputDecoration(
                     icon: Icon(Icons.landscape),
                     hasFloatingPlaceholder: true,
-                    hintText: "Logradouro"
+                    hintText: "Logradouro (*)"
                   ),
                   controller: _logradouro,
                   validator: (value) {
@@ -211,16 +211,10 @@ class _CadastroClienteState extends State<CadastroCliente> {
                   decoration: const InputDecoration(
                       icon: Icon(Icons.phone_iphone),
                       hasFloatingPlaceholder: true,
-                      hintText: "Telefone"
+                      hintText: "Celular (*)"
                   ),
                   keyboardType: TextInputType.number,
                   controller: _eCelular,
-                  validator: (value) {
-                    if(value.isEmpty){
-                      return 'Este campo é obrigatório';
-                    }
-                    return null;
-                  },
                   onChanged: (celular){
                     _cliente.celular=celular;
                   },
@@ -233,13 +227,12 @@ class _CadastroClienteState extends State<CadastroCliente> {
                       new DropdownButton<Estados>(
                       iconEnabledColor: Colors.red,
                       value: _estado,
-                      
-                    onChanged: (Estados newValue) {
-                      setState(() {
-                        _cliente.estado=newValue;
-                        _estado = newValue;
-                      });
-                    },
+                      onChanged: (Estados newValue) {
+                        setState(() {
+                          _cliente.estado=newValue;
+                          _estado = newValue;
+                        });
+                      },
                     items: Estados.values.map((Estados _estado) {
                       return new DropdownMenuItem<Estados>(
                         value: _estado,
@@ -262,12 +255,9 @@ class _CadastroClienteState extends State<CadastroCliente> {
                             Cliente responseCliente = await fCliente;
                             if(responseCliente.id != null){
                               Navigator.push(
-                                context, MaterialPageRoute(builder: (BuildContext context) => LoginPage(sucesso: true,)));
+                                context, MaterialPageRoute(builder: (BuildContext context) => LoginPage(sucesso: true,open: false)));
                             } else {
-                              SnackBar(
-                                content: Text("Algo deu errado, por favor confira se todos os campos foram preenchidos"),
-                                duration: Duration(seconds: 15),
-                              );
+                               Text("Algo deu errado, por favor confira se todos os campos foram preenchidos", style: TextStyle(color: Colors.white, backgroundColor: Colors.red),);
                            }
                           }
                         },
