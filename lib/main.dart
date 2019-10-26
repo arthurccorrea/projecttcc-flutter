@@ -1,13 +1,17 @@
 import 'dart:io';
 
 import 'package:appbarbearia_flutter/api/AuthApiService.dart';
+import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
+import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
+import 'package:appbarbearia_flutter/pages/cadastroServico.dart';
 import 'package:appbarbearia_flutter/pages/form_marcarHorario.dart';
 import 'package:appbarbearia_flutter/pages/listagemBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/loginPage.dart';
+import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/pagina_teste.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +30,7 @@ void main() async {
       String username = await authService.getLoggedUserUsername();
       Future<User> fUser = authService.getUserByUsername(username);
       responseUser = await fUser;
-      fUser.whenComplete(() {
+      await fUser.whenComplete(() {
         _defaultHome = HomePage(user: responseUser, sucesso: true, open: true, mensagem: "");
       });
     }
@@ -110,7 +114,7 @@ Widget _buildHomePageCliente(BuildContext context, User user) {
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new ListagemBarbearia()));
+                  builder: (BuildContext context) => new ListagemBarbearia(loggedUser: user,)));
             },
           ),
           new ListTile(
@@ -204,21 +208,35 @@ Widget _buildHomePageBarbearia(BuildContext context, User user) {
             },
           ),
           new ListTile(
-            title: new Text("Não"),
-            trailing: new Icon(Icons.add_shopping_cart),
-            onTap: () {
+            title: new Text("Minha Barbearia"),
+            trailing: new Icon(Icons.add),
+            onTap: () async {
               Navigator.of(context).pop();
+             Future<List<Barbearia>> fBarbearias = _findCompletoMinhasBarbearias(user);
+             List<Barbearia> minhasBarbearias  = new List<Barbearia>();
+             await fBarbearias.whenComplete( () async {
+             minhasBarbearias = await fBarbearias;
+             });
+             if(minhasBarbearias.length == 1) {
               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new HorarioMarcadoForm()));
+                  builder: (BuildContext context) => new MinhaBarbearia(barbearia: minhasBarbearias[0], loggedUser: user, open: true, sucesso: true, mensagem: "",)));
+             } else {
+               Navigator.of(context).push(new MaterialPageRoute(
+                  builder: (BuildContext context) => new ListagemBarbearia(barbearias: minhasBarbearias, loggedUser: user)));
+             }
             },
           ),
           new ListTile(
             title: new Text("Listagem barberias"),
             trailing: new Icon(Icons.accessibility),
-            onTap: () {
+            onTap: () async {
+              Future<List<Barbearia>> fBarbearias = _listaBarbearias();
+              List<Barbearia> barbearias = await fBarbearias;
+              await fBarbearias.whenComplete( () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new ListagemBarbearia()));
+                  builder: (BuildContext context) => new ListagemBarbearia(loggedUser: user, barbearias: barbearias,)));
+              });
             },
           ),
           new ListTile(
@@ -263,4 +281,19 @@ Widget _buildHomePageBarbearia(BuildContext context, User user) {
       ),
     ),
   );
+}
+
+Future<List<Barbearia>> _listaBarbearias() async {
+
+  Future<List<Barbearia>> fBarbearias = BarbeariaApi.findAll();
+  List<Barbearia> barbearias = await fBarbearias;
+
+  return barbearias;
+}
+
+Future<List<Barbearia>> _findCompletoMinhasBarbearias(User user) async {
+
+  Future<List<Barbearia>> fBarbearia = BarbeariaApi.findCompletoMinhasBarbearias(user);
+  List<Barbearia> minhasBarbearias = await fBarbearia;
+  return minhasBarbearias;
 }

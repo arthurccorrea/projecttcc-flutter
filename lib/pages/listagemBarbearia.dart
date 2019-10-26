@@ -1,38 +1,19 @@
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
-import 'package:appbarbearia_flutter/model/Estados.dart';
+import 'package:appbarbearia_flutter/model/User.dart';
+import 'package:appbarbearia_flutter/pages/listagemServicos.dart';
 import 'package:appbarbearia_flutter/pages/paginaBarbearia.dart';
 import 'package:flutter/material.dart';
 
-Barbearia _barbearia = Barbearia.construct(
-    "123",
-    "Barbearia do juquinha",
-    "A melhor barbearia da região",
-    "Salto",
-    "Rua coelho Neto Nº338",
-    Estados.SP,
-    8,
-    0,
-    16,
-    15);
-Barbearia _barbearia2 = Barbearia.construct(
-    "123",
-    "Barbearia do zézim",
-    "COM CERTEZA A MELHOR DA REGIÃO",
-    "Salto",
-    "Rua Brasil Nº257",
-    Estados.SP,
-    8,
-    0,
-    16,
-    15);
-List<Barbearia> listaBarbearia = [
-  _barbearia,
-  _barbearia,
-  _barbearia,
-  _barbearia2
-];
+
+
 
 class ListagemBarbearia extends StatefulWidget {
+
+  final User loggedUser;
+  final List<Barbearia> barbearias;
+
+  const ListagemBarbearia({this.loggedUser, this.barbearias});
+
   @override
   State<StatefulWidget> createState() {
     return new _ListagemBarebeariaState();
@@ -40,6 +21,7 @@ class ListagemBarbearia extends StatefulWidget {
 }
 
 class _ListagemBarebeariaState extends State<ListagemBarbearia> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,16 +31,16 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
       body: Container(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 5.0),
           child: ListView.builder(
-              itemCount: listaBarbearia.length,
+              itemCount: widget.barbearias.length,
               itemBuilder: (context, i) {
                 return new GestureDetector(
                   onTap: () {
                     Navigator.of(context).push(new MaterialPageRoute(
                         builder: (BuildContext context) =>
-                            new PaginaBarbearia()));
+                            new PaginaBarbearia(barbearia: widget.barbearias[i])));
                   },
                   child: new Card(
-                   margin: EdgeInsets.fromLTRB(0, 2, 0, 2), 
+                   margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -70,7 +52,7 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
                                   padding: const EdgeInsets.fromLTRB(
                                       12.0, 12.0, 12.0, 6.0),
                                     child: Text(
-                                    listaBarbearia[i].nome,
+                                    widget.barbearias[i].nome,
                                     style: TextStyle(
                                         fontSize: 22.0,
                                         fontWeight: FontWeight.bold),
@@ -112,7 +94,7 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
                               padding: const EdgeInsets.fromLTRB(
                                   12.0, 6.0, 12.0, 12.0),
                               child: Text(
-                                listaBarbearia[i].descricao,
+                                widget.barbearias[i].descricao,
                                 style: TextStyle(fontSize: 18.0),
                               ),
                             ),
@@ -125,7 +107,7 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
                               padding: const EdgeInsets.fromLTRB(
                                   12.0, 6.0, 12.0, 12.0),
                               child: Text(
-                                "Cidade: " + listaBarbearia[i].cidade,
+                                "Cidade: " + widget.barbearias[i].cidade,
                                 style: TextStyle(fontSize: 18.0),
                               ),
                             ),

@@ -44,7 +44,7 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cadastro de cliente")),
+      appBar: AppBar(title: Text("Cadastro de barbeiro")),
       body: Container(
         child: Form(
           key: _formKey,

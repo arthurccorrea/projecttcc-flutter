@@ -1,9 +1,12 @@
 import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/main.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
+import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
+import 'package:appbarbearia_flutter/pages/paginaBarbearia.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class CadastroBarbearia extends StatefulWidget {
@@ -52,6 +55,12 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hasFloatingPlaceholder: true,
                     hintText: "Insira o nome"
                   ),
+                  validator: (value) {
+                    if(value.isEmpty){
+                      return 'Este campo é obrigatório';
+                    }
+                    return null;
+                  },
                   controller: _nome,
                   onChanged: (nome){
                     barbearia.setNome(nome);
@@ -64,6 +73,12 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hintText: "Descreva a sua barbearia"
                   ),
                   controller: _descricao,
+                  validator: (value) {
+                    if(value.isEmpty){
+                      return 'Este campo é obrigatório';
+                    }
+                    return null;
+                  },
                   onChanged: (descricao){
                     barbearia.setDescricao(descricao);
                   },
@@ -80,6 +95,12 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hintText: "Cidade"
                   ),
                   controller: _cidade,
+                  validator: (value) {
+                    if(value.isEmpty){
+                      return 'Este campo é obrigatório';
+                    }
+                    return null;
+                  },
                   onChanged: (cidade){
                     barbearia.setCidade(cidade);
                   },
@@ -91,6 +112,12 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     hintText: "Logradouro"
                   ),
                   controller: _logradouro,
+                  validator: (value) {
+                    if(value.isEmpty){
+                      return 'Este campo é obrigatório';
+                    }
+                    return null;
+                  },
                   onChanged: (logradouro){
                     barbearia.setEndereco(logradouro);
                   },
@@ -205,10 +232,10 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                         child: Text("Cadastrar"), 
                         key: Key("_submitButton"),
                         onPressed: () async {  
-                          Future<http.Response> fResponse = BarbeariaApi.saveBarbearia(barbearia);
-                          http.Response response = await fResponse;
-                          if(response.statusCode == 200){
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HomePage(open: false, sucesso: true, mensagem: "Cadastro de barbearia foi efetuado com sucesso")));
+                          Barbearia responseBarbearia =  await _saveBarbearia(barbearia, widget.loggedUser);
+                          if(responseBarbearia.id != null){
+                            // TODO: Abrir a página da barbearia
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new PaginaBarbearia(barbearia: responseBarbearia, open: false, sucesso: true, mensagem: "Cadastro Efetuado com sucesso")));
                           } else {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new CadastroBarbearia(sucesso: false, open: false, mensagem: "Ops, algo deu errado, por favor, faça seu cadastro novamente",loggedUser: widget.loggedUser,)));
                           }
@@ -227,6 +254,16 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
       ),
     );
   }
+}
+
+Future<Barbearia> _saveBarbearia(Barbearia barbearia, User user) async{
+  List<Barbeiro> barbeiros = new List<Barbeiro>();
+  barbeiros.add((user.barbeiro));
+  barbearia.barbeiros = barbeiros;
+  Future<Barbearia> fBarbearia = BarbeariaApi.saveBarbearia(barbearia);
+  Barbearia responseBarbearia = await fBarbearia;
+  return responseBarbearia;
+
 }
 
 Widget _loadMensagemDeErro(String mensagem){
