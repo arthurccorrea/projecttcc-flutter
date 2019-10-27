@@ -1,4 +1,3 @@
-import 'package:appbarbearia_flutter/model/Horario.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +13,13 @@ class HorarioMarcadoForm extends StatefulWidget{
 class _HorarioMarcadoPage extends State<HorarioMarcadoForm> {
   final _horarioMarcado = HorarioMarcado();
   final _formKey = GlobalKey<FormState>();
-  final List<Horario> _horario = new List<Horario>();
+  // final List<Horario> _horario = new List<Horario>();
   var list = ["one", "two", "three", "four"]; 
 
   @override
   Widget build(BuildContext context) {
     // Build a Form widget using the _formKey created above.
-    final format = DateFormat("yyyy-MM-dd HH:mm");
+    // final format = DateFormat("yyyy-MM-dd HH:mm");
     return Scaffold(
       appBar: AppBar( title: Text("Horario Marcado")),
       body: Container(

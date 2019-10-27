@@ -1,6 +1,5 @@
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
-import 'package:appbarbearia_flutter/pages/listagemServicos.dart';
 import 'package:appbarbearia_flutter/pages/paginaBarbearia.dart';
 import 'package:flutter/material.dart';
 

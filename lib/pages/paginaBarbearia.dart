@@ -1,23 +1,6 @@
-import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
-import 'package:appbarbearia_flutter/model/Estados.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-
-  Barbearia _barbearia = Barbearia.construct(
-    "123",
-    "Barbearia do juquinha",
-    "A melhor barbearia da região",
-    "Salto",
-    "Rua coelho Neto Nº338",
-    Estados.SP,
-    8,
-    0,
-    16,
-    15);
-
-
 
 class PaginaBarbearia extends StatefulWidget {
 

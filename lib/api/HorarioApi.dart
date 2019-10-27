@@ -1,15 +1,30 @@
 import 'dart:async';
+import 'package:appbarbearia_flutter/model/Barbeiro.dart';
+import 'package:appbarbearia_flutter/model/Horario.dart';
+import 'package:appbarbearia_flutter/pages/loginPage.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-const baseUrl = "https://localhost:8080/horario/api/horarioMarcado";
+const baseUrl = "https://tccappbarbearia.herokuapp.com/api/horarioMarcado/";
 
-class API {
-  static Future<http.Response> getHorariosMarcados() {
-    var url = baseUrl + "/listaHorariosDisponiveis";
-    DateTime dateTime = new DateTime.now();
-    var date = DateTime.fromMillisecondsSinceEpoch(1565659067675);
-    url += "5d437f9c09319a1c44d19e0a/"+ date.toString();
-    return http.get(url);
+class HorarioApi {
 
+  static Future<List<Horario>> getHorariosDisponiveisBarbearia(
+    DateTime data, Barbeiro barbeiro) async {
+    Map<String, String> headers = new Map<String, String>();
+    headers["Content-Type"] = "application/json";
+    String token = await authService.obterToken();
+    headers["Authorization"] = "Bearer $token";
+    var url = baseUrl + "horariosDisponiveis/" + barbeiro.id + "/" + data.millisecondsSinceEpoch.toString();
+    Future<http.Response> fResponse = http.get(url, headers: headers);
+    http.Response response = await fResponse;
+    List<Horario> horarios = new List<Horario>();
+
+    if(response.statusCode == 200) {
+      var responseList = json.decode(response.body) as List;
+      horarios = responseList.map((i) => Horario.fromJson(i)).toList();
+    }
+
+    return horarios;
   }
 }

@@ -1,16 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:appbarbearia_flutter/model/User.dart';
-import 'package:appbarbearia_flutter/pages/loginPage.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:path_provider/path_provider.dart';
 
 class AuthApiService {
 
-  String _BASE_URL = "https://tccappbarbearia.herokuapp.com/";
+  String baseUrl = "https://tccappbarbearia.herokuapp.com/";
   String token;
 
   // Login
@@ -18,7 +16,7 @@ class AuthApiService {
     File tokenFile = await localFile;
     File loggedUser = await localUserFile;
     if(token == null) {
-        Future<http.Response> response = http.post(_BASE_URL + "autenticacao/obter-token", body: json.encode(user), headers: {"Content-Type": "application/json"});
+        Future<http.Response> response = http.post(baseUrl + "autenticacao/obter-token", body: json.encode(user), headers: {"Content-Type": "application/json"});
         http.Response tokenResponse = await response;
         if(tokenResponse.statusCode == 200){
           token = tokenResponse.body;
@@ -55,7 +53,7 @@ class AuthApiService {
     String tokenForHeader = "Bearer " + headerToken;
     Map<String, String> headers = new Map<String, String>();
     headers['Authorization']=tokenForHeader;
-    String requestURL = _BASE_URL + "user/username/$username";
+    String requestURL = baseUrl + "user/username/$username";
     Future<http.Response> fResponse = http.get(requestURL, headers: headers);
     http.Response response = await fResponse;
     User user;
@@ -76,7 +74,7 @@ class AuthApiService {
     Map<String, String> headers = new Map<String, String>();
     headers["Content-type"]="application/json";
     headers["Authorization"] = "Bearer $tokenToValidate";
-    Future<http.Response> response = http.post(_BASE_URL + "autenticacao/validar-token", body: "Bearer " + tokenToValidate, headers: headers);
+    Future<http.Response> response = http.post(baseUrl + "autenticacao/validar-token", body: "Bearer " + tokenToValidate, headers: headers);
     http.Response tokenResponse = await response;
     if(tokenResponse.statusCode != 200){
       return false;

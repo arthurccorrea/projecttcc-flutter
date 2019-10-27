@@ -18,6 +18,9 @@ HorarioMarcado _$HorarioMarcadoFromJson(Map<String, dynamic> json) {
     ..cliente = json['cliente'] == null
         ? null
         : Cliente.fromJson(json['cliente'] as Map<String, dynamic>)
+    ..servico = json['servico'] == null
+        ? null
+        : Servico.fromJson(json['servico'] as Map<String, dynamic>)
     ..dia = json['dia'] == null ? null : DateTime.parse(json['dia'] as String)
     ..cadastro = json['cadastro'] == null
         ? null
@@ -33,6 +36,7 @@ Map<String, dynamic> _$HorarioMarcadoToJson(HorarioMarcado instance) =>
       'horario': instance.horario,
       'barbeiro': instance.barbeiro,
       'cliente': instance.cliente,
+      'servico': instance.servico,
       'dia': instance.dia?.toIso8601String(),
       'cadastro': instance.cadastro?.toIso8601String(),
       'alterado': instance.alterado?.toIso8601String()

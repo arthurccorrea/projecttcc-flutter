@@ -10,18 +10,17 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CadastroCliente extends StatefulWidget {
-
   final sucesso;
   final Cliente cliente;
 
-  const CadastroCliente({Key key, this.sucesso, this.cliente}): super(key: key);
+  const CadastroCliente({Key key, this.sucesso, this.cliente})
+      : super(key: key);
 
   @override
   _CadastroClienteState createState() => _CadastroClienteState();
 }
 
 class _CadastroClienteState extends State<CadastroCliente> {
-
   var _nome = TextEditingController();
   var _cpf = new MaskedTextController(mask: '000.000.000-00');
   // DateTime _dataNascimento;
@@ -41,90 +40,88 @@ class _CadastroClienteState extends State<CadastroCliente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cadastro de cliente")),
-      body: Container(
-        child: Form(
+        appBar: AppBar(title: Text("Cadastro de cliente")),
+        body: Container(
+            child: Form(
           key: _formKey,
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(15.0),
-          children: <Widget>[
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              validator: (value) {
-                if(value.isEmpty){
-                  return 'Este campo é obrigatório';
-                }
-                return null;
-              },
-              decoration: const InputDecoration(
-                icon: Icon(Icons.mail),
-                hasFloatingPlaceholder: true,
-                hintText: "Digite seu email (*)",
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(15.0),
+            children: <Widget>[
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                autocorrect: false,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.mail),
+                  hasFloatingPlaceholder: true,
+                  hintText: "Digite seu email (*)",
+                ),
+                controller: _eUsername,
+                onChanged: (username) {
+                  _user.username = username;
+                },
               ),
-              controller: _eUsername,
-              onChanged: (username) {
-                _user.username = username;
-              },
-            ),
-            TextFormField(
-              autocorrect: false,
-              obscureText: true,
-              decoration: const InputDecoration(
-                hintText: "Digite sua senha (*)",
-                icon: Icon(Icons.vpn_key),
+              TextFormField(
+                autocorrect: false,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  hintText: "Digite sua senha (*)",
+                  icon: Icon(Icons.vpn_key),
+                ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                },
+                controller: _ePassword,
+                onChanged: (password) {
+                  _user.password = password;
+                },
               ),
-              validator: (value) {
-                if(value.isEmpty){
-                  return 'Este campo é obrigatório';
-                }
-                return null;
-              },
-              controller: _ePassword,
-              onChanged: (password) {
-                _user.password = password;
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.person),
-                hasFloatingPlaceholder: true,
-                hintText: "Insira o nome (*)"
+              TextFormField(
+                decoration: const InputDecoration(
+                    icon: Icon(Icons.person),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Insira o nome (*)"),
+                controller: _nome,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                },
+                onChanged: (nome) {
+                  _cliente.nome = nome;
+                },
               ),
-              controller: _nome,
-              validator: (value) {
-                if(value.isEmpty){
-                  return 'Este campo é obrigatório';
-                }
-                return null;
-              },
-              onChanged: (nome){
-                _cliente.nome=nome;
-              },
-            ),
-            TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(Icons.person),
-                hasFloatingPlaceholder: true,
-                hintText: "Insira o seu CPF (*)"
+              TextFormField(
+                decoration: const InputDecoration(
+                    icon: Icon(Icons.person),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Insira o seu CPF (*)"),
+                controller: _cpf,
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                },
+                onChanged: (cpf) {
+                  _cliente.cpf = cpf;
+                },
               ),
-              controller: _cpf,
-              keyboardType: TextInputType.number,
-              validator: (value) {
-                if(value.isEmpty){
-                  return 'Este campo é obrigatório';
-                }
-                return null;
-              },
-              onChanged: (cpf){
-                _cliente.cpf=cpf;
-              },
-            ),
-            DateTimePickerFormField(
+              DateTimePickerFormField(
                   dateOnly: true,
                   inputType: InputType.date,
-                  editable: false, 
+                  editable: false,
                   format: DateFormat("dd/MM/yyyy"),
                   keyboardType: TextInputType.datetime,
                   controller: _dataNascimento,
@@ -135,148 +132,152 @@ class _CadastroClienteState extends State<CadastroCliente> {
                     icon: Icon(Icons.calendar_today),
                   ),
                   validator: (value) {
-                    if(value == null){
+                    if (value == null) {
                       return 'Este campo é obrigatório';
                     }
                     return null;
                   },
                   onChanged: (dt) {
-                    _cliente.dataNascimento=dt;
+                    _cliente.dataNascimento = dt;
                     Text(DateFormat("dd-MM-yyyy").format(dt));
-                  }
-                ),
-             Divider(),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text("ENDERECO"),
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
+                  }),
+              Divider(),
+              Align(
+                alignment: Alignment.center,
+                child: Text("ENDERECO"),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
                     icon: Icon(Icons.location_city),
                     hasFloatingPlaceholder: true,
-                    hintText: "Cidade (*)"
-                  ),
-                  validator: (value) {
-                    if(value.isEmpty){
-                      return 'Este campo é obrigatório';
-                    }
-                    return null;
-                  },
-                  controller: _cidade,
-                  onChanged: (cidade){
-                    _cliente.cidade=cidade;
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
+                    hintText: "Cidade (*)"),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                },
+                controller: _cidade,
+                onChanged: (cidade) {
+                  _cliente.cidade = cidade;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
                     icon: Icon(Icons.landscape),
                     hasFloatingPlaceholder: true,
-                    hintText: "Logradouro (*)"
-                  ),
-                  controller: _logradouro,
-                  validator: (value) {
-                    if(value.isEmpty){
-                      return 'Este campo é obrigatório';
-                    }
-                    return null;
-                  },
-                  onChanged: (endereco){
-                    _cliente.endereco=endereco;
-                  },
+                    hintText: "Logradouro (*)"),
+                controller: _logradouro,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                },
+                onChanged: (endereco) {
+                  _cliente.endereco = endereco;
+                },
+              ),
+              Divider(),
+              Align(
+                alignment: Alignment.center,
+                child: Text("CONTATO"),
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.phone),
+                  hasFloatingPlaceholder: true,
+                  hintText: "Telefone",
                 ),
-                Divider(),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text("CONTATO"),
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                      icon: Icon(Icons.phone),
-                      hasFloatingPlaceholder: true,
-                      hintText: "Telefone",
-                  ),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if(value.isEmpty){
-                      return 'Este campo é obrigatório';
-                    }
-                    return null;
-                  },
-                  controller: _eTelefone,
-                  onChanged: (telefone){
-                    _cliente.telefone=telefone;
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(
-                      icon: Icon(Icons.phone_iphone),
-                      hasFloatingPlaceholder: true,
-                      hintText: "Celular (*)"
-                  ),
-                  keyboardType: TextInputType.number,
-                  controller: _eCelular,
-                  onChanged: (celular){
-                    _cliente.celular=celular;
-                  },
-                ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      Text("Selecione a sigla do seu estado", 
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                },
+                controller: _eTelefone,
+                onChanged: (telefone) {
+                  _cliente.telefone = telefone;
+                },
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                    icon: Icon(Icons.phone_iphone),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Celular (*)"),
+                keyboardType: TextInputType.number,
+                controller: _eCelular,
+                onChanged: (celular) {
+                  _cliente.celular = celular;
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text("Selecione a sigla do seu estado",
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                      new DropdownButton<Estados>(
+                  new DropdownButton<Estados>(
                       iconEnabledColor: Colors.red,
                       value: _estado,
                       onChanged: (Estados newValue) {
                         setState(() {
-                          _cliente.estado=newValue;
+                          _cliente.estado = newValue;
                           _estado = newValue;
                         });
                       },
-                    items: Estados.values.map((Estados _estado) {
-                      return new DropdownMenuItem<Estados>(
-                        value: _estado,
-                        child: new Text(_estado.toString().replaceAll("Estados.", "")));
-                    }).toList()
-                    )
+                      items: Estados.values.map((Estados _estado) {
+                        return new DropdownMenuItem<Estados>(
+                            value: _estado,
+                            child: new Text(
+                                _estado.toString().replaceAll("Estados.", "")));
+                      }).toList())
                 ],
               ),
-                 Row(
-                    children: <Widget>[
-                      Expanded(
+              Row(
+                children: <Widget>[
+                  Expanded(
                     child: ButtonTheme(
                       minWidth: double.infinity,
                       child: RaisedButton(
-                        child: Text("Cadastrar"), 
+                        child: Text("Cadastrar"),
                         key: Key("_submitButton"),
-                        onPressed: () async{
+                        onPressed: () async {
                           if (_formKey.currentState.validate()) {
-                            Future<Cliente> fCliente = _saveCliente(_user, _cliente);
+                            Future<Cliente> fCliente =
+                                _saveCliente(_user, _cliente);
                             Cliente responseCliente = await fCliente;
-                            if(responseCliente.id != null){
+                            if (responseCliente.id != null) {
                               Navigator.push(
-                                context, MaterialPageRoute(builder: (BuildContext context) => LoginPage(sucesso: true,open: false)));
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          LoginPage(
+                                              sucesso: true, open: false)));
                             } else {
-                               Text("Algo deu errado, por favor confira se todos os campos foram preenchidos", style: TextStyle(color: Colors.white, backgroundColor: Colors.red),);
-                           }
+                              Text(
+                                "Algo deu errado, por favor confira se todos os campos foram preenchidos",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    backgroundColor: Colors.red),
+                              );
+                            }
                           }
                         },
                         elevation: 3.0,
                         color: Colors.purple,
                         textColor: Colors.white,
-                        ),
                       ),
+                    ),
                   ),
                 ],
               ),
-          ],
-      ),
-    )
-    )
-    );
+            ],
+          ),
+        )));
   }
 
-  Future<Cliente> _saveCliente(User user, Cliente cliente) async{
+  Future<Cliente> _saveCliente(User user, Cliente cliente) async {
     UserClienteWrapper clienteWrapper = new UserClienteWrapper();
     clienteWrapper.cliente = cliente;
     clienteWrapper.user = user;

@@ -1,11 +1,10 @@
 import 'package:appbarbearia_flutter/api/AuthApiService.dart';
 import 'package:appbarbearia_flutter/main.dart';
+import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbeiro.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
 import 'package:flutter/material.dart';
-import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/scheduler.dart';
 
 AuthApiService authService = new AuthApiService();
 

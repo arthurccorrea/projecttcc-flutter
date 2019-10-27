@@ -2,11 +2,12 @@ import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/api/ServicoApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Barbeiro.dart';
+import 'package:appbarbearia_flutter/model/Horario.dart';
 import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
+import 'package:appbarbearia_flutter/pages/horariosBarbearia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 
 class MinhaBarbearia extends StatefulWidget {
@@ -35,6 +36,7 @@ class _MinhaBarbeariaState extends State<MinhaBarbearia> {
   void initState() {
     descricaoBarbearia = new _DescricaoBarbearia(
       barbearia: widget.barbearia,
+      loggedUser: widget.loggedUser,
       open: widget.open,
       sucesso: widget.sucesso,
       mensagem: widget.mensagem,
@@ -120,9 +122,10 @@ class _DescricaoBarbearia extends StatefulWidget {
   final Barbearia barbearia;
   final bool open;
   final bool sucesso;
+  final User loggedUser;
   final String mensagem;
 
-  const _DescricaoBarbearia({this.barbearia, this.open, this.sucesso, this.mensagem});
+  const _DescricaoBarbearia({this.barbearia, this.loggedUser, this.open, this.sucesso, this.mensagem});
 
   @override
   _DescricaoBarbeariaState createState() => _DescricaoBarbeariaState();
@@ -140,6 +143,12 @@ DateFormat dateFormat = DateFormat("HH:mm");
         Text("Descricao: " + widget.barbearia.descricao),
         Text("Hora de abertura : " + dateFormat.format( widget.barbearia.horarioAbertura )),
         Text("Hora de fechar : " + dateFormat.format( widget.barbearia.horarioFechamento)),
+        RaisedButton(
+          child: Text("Marcar horário"),
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorariosBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser, horariosBarbearia: new List<Horario>(), data: null,)));
+          },          
+        ),
         !widget.open && widget.sucesso ? Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.green)) : Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.red),),
       ],
     ));
