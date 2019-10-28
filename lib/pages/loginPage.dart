@@ -40,6 +40,12 @@ class _LoginPageState extends State<LoginPage> {
       body: new ListView(
         padding: EdgeInsets.all(15.0),
         children: <Widget>[
+          Image.network('https://i.ibb.co/xGYC5VG/kisspng-comb-barber-hairstyle-hairdresser-vector-barber-tools-5a951d19d21015-1148711815197217538604.png', height: 120.0 ,width: 80.0 ,),
+          Text("App Barbearia", style: TextStyle(fontSize: 30.0), textAlign: TextAlign.center,), 
+          Text(" "),
+          Text(" "),
+          Text(" "),
+          Text(" "),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             autocorrect: false,

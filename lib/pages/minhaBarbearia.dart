@@ -139,33 +139,35 @@ DateFormat dateFormat = DateFormat("HH:mm");
         child: ListView(
         //  MainAxisSize.min,
       children: <Widget>[
-        Text(widget.barbearia.nome, style: TextStyle(fontWeight: FontWeight.bold, fontSize:25), textAlign: TextAlign.center,),      
+        Text(""),
+        Text(widget.barbearia.nome, style: TextStyle(fontWeight: FontWeight.bold, fontSize:40), textAlign: TextAlign.center,),
+        Text(""),
+        Text(" " + widget.barbearia.descricao,style: TextStyle(fontSize: 25), textAlign: TextAlign.center, ),       
+        Text(""),
         Row(
           children: <Widget>[
-            Text("Descricao :", style: TextStyle(fontWeight: FontWeight.bold),),
-            Text(" " + widget.barbearia.descricao),
+            Text("Local :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+            Text(" " + widget.barbearia.endereco + ", " + widget.barbearia.cidade, style: TextStyle(fontSize: 20),),
           ],
         ),
+        Text(""),
         Row(
           children: <Widget>[
-            Text("Endereco :", style: TextStyle(fontWeight: FontWeight.bold),),
-            Text(" " + widget.barbearia.endereco + ", " + widget.barbearia.cidade),
-          ],
-        ),
-        Row(
-          children: <Widget>[
-            Text("Horário de abertura :", style: TextStyle(fontWeight: FontWeight.bold),),
-            Text(" " + dateFormat.format( widget.barbearia.horarioAbertura)),
+            Text("Horário de abertura :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+            Text(" " + dateFormat.format( widget.barbearia.horarioAbertura,), style: TextStyle(fontSize: 20),),
         ],
         ),
+        Text(""),
         Row(
           children: <Widget>[
-            Text("Horário de fechamento :", style: TextStyle(fontWeight: FontWeight.bold),),
-            Text(" " + dateFormat.format( widget.barbearia.horarioFechamento)),
+            Text("Horário de fechamento :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+            Text(" " + dateFormat.format( widget.barbearia.horarioFechamento), style: TextStyle(fontSize: 20)),
           ],
         ),
+        Text(""),
         RaisedButton(
           child: Text("Marcar horário"),
+          elevation: 5.0,
           onPressed: () {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorariosBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser, horariosBarbearia: new List<Horario>(), data: null,)));
           },          
