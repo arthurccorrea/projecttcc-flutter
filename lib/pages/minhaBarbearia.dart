@@ -137,12 +137,33 @@ DateFormat dateFormat = DateFormat("HH:mm");
   Widget build(BuildContext context) {
     return Container(
         child: ListView(
+         MainAxisSize.min,
       children: <Widget>[
-        Text(widget.barbearia.nome),      
-        Text("Endereco : " + widget.barbearia.endereco +  ", " + widget.barbearia.cidade ),
-        Text("Descricao: " + widget.barbearia.descricao),
-        Text("Hora de abertura : " + dateFormat.format( widget.barbearia.horarioAbertura )),
-        Text("Hora de fechar : " + dateFormat.format( widget.barbearia.horarioFechamento)),
+        Text(widget.barbearia.nome, style: TextStyle(fontWeight: FontWeight.bold, fontSize:25), textAlign: TextAlign.center,),      
+        Row(
+          children: <Widget>[
+            Text("Descricao :", style: TextStyle(fontWeight: FontWeight.bold),),
+            Text(" " + widget.barbearia.descricao),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Text("Endereco :", style: TextStyle(fontWeight: FontWeight.bold),),
+            Text(" " + widget.barbearia.endereco + ", " + widget.barbearia.cidade),
+          ],
+        ),
+        Row(
+          children: <Widget>[
+            Text("Hora de abertura :", style: TextStyle(fontWeight: FontWeight.bold),),
+            Text(" " + dateFormat.format( widget.barbearia.horarioAbertura)),
+        ],
+        ),
+        Row(
+          children: <Widget>[
+            Text("Hora de fechar :", style: TextStyle(fontWeight: FontWeight.bold),),
+            Text(" " + dateFormat.format( widget.barbearia.horarioFechamento)),
+          ],
+        ),
         RaisedButton(
           child: Text("Marcar horário"),
           onPressed: () {
