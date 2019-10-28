@@ -1,3 +1,4 @@
+import 'package:appbarbearia_flutter/api/HorarioMarcadoApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Cliente.dart';
@@ -92,8 +93,8 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                 child: Text("Marcar horário"),
                 key: Key("_searchButton"),
                 onPressed: () async {
-                  HorarioMarcado _horarioMarcadoResponse = await _salvarHorario(_horarioMarcado);
-                  // TODO: ABRIR A PAGINA DE HORARIO MARCADO => FAZER ELA TAMBEM
+                  HorarioMarcado _horarioMarcadoResponse = await _salvarHorarioMarcado(_horarioMarcado);
+                  // TODO: ABRIR PAGINA DE HORARIO MARCADO => FAZER ELA
                 },
                 elevation: 3.0,
                 color: Colors.purple,
@@ -107,6 +108,9 @@ class _MarcarHorarioState extends State<MarcarHorario> {
   }
 }
 
-Future<HorarioMarcado> _salvarHorario(HorarioMarcado horarioMarcado) async {
-// TODO: LOGICA PARA MARCAR O HORARIO NA HorarioMarcadoApi
+Future<HorarioMarcado> _salvarHorarioMarcado(HorarioMarcado horarioMarcado) async {
+  Future<HorarioMarcado> fHorarioMarcado  = HorarioMarcadoApi.salvarHorarioMarcado(horarioMarcado);
+  HorarioMarcado responseHorarioMarcado = await fHorarioMarcado;
+
+  return responseHorarioMarcado;
 }

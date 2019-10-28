@@ -137,7 +137,7 @@ DateFormat dateFormat = DateFormat("HH:mm");
   Widget build(BuildContext context) {
     return Container(
         child: ListView(
-         MainAxisSize.min,
+        //  MainAxisSize.min,
       children: <Widget>[
         Text(widget.barbearia.nome, style: TextStyle(fontWeight: FontWeight.bold, fontSize:25), textAlign: TextAlign.center,),      
         Row(
@@ -154,13 +154,13 @@ DateFormat dateFormat = DateFormat("HH:mm");
         ),
         Row(
           children: <Widget>[
-            Text("Hora de abertura :", style: TextStyle(fontWeight: FontWeight.bold),),
+            Text("Horário de abertura :", style: TextStyle(fontWeight: FontWeight.bold),),
             Text(" " + dateFormat.format( widget.barbearia.horarioAbertura)),
         ],
         ),
         Row(
           children: <Widget>[
-            Text("Hora de fechar :", style: TextStyle(fontWeight: FontWeight.bold),),
+            Text("Horário de fechamento :", style: TextStyle(fontWeight: FontWeight.bold),),
             Text(" " + dateFormat.format( widget.barbearia.horarioFechamento)),
           ],
         ),
