@@ -5,6 +5,7 @@ import 'package:appbarbearia_flutter/model/Cliente.dart';
 import 'package:appbarbearia_flutter/model/Horario.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/Servico.dart';
+import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -14,8 +15,9 @@ class MarcarHorario extends StatefulWidget {
   final DateTime data;
   final Barbeiro barbeiro;
   final Cliente cliente;
+  final bool minhaBarbearia;
 
-  const MarcarHorario({this.barbearia, this.horario, this.data, this.barbeiro, this.cliente});
+  const MarcarHorario({this.barbearia, this.horario, this.data, this.barbeiro, this.cliente, this.minhaBarbearia});
 
   @override
   _MarcarHorarioState createState() => _MarcarHorarioState();
@@ -25,6 +27,7 @@ class _MarcarHorarioState extends State<MarcarHorario> {
   Servico _servico;
   DateFormat formatHora = new DateFormat("hh:mm");
   DateFormat formatDia = new DateFormat("dd/MM/yyyy");
+  var _clienteNome = TextEditingController();
   HorarioMarcado _horarioMarcado = new HorarioMarcado();
 
    @override
@@ -67,6 +70,22 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                     }).toList())
               ],
             ),
+            widget.minhaBarbearia ? TextFormField(
+                  decoration: const InputDecoration(
+                      icon: Icon(Icons.person),
+                      hasFloatingPlaceholder: true,
+                      hintText: "Insira o nome do cliente"),
+                  controller: _clienteNome,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Este campo é obrigatório';
+                    }
+                    return null;
+                  },
+                  onChanged: (clienteNome) {
+                    _horarioMarcado.clienteNome = clienteNome;
+                  },
+                ) : Text(""),
             Row(
               children: <Widget>[
                 Text("Barbeiro: " )
@@ -94,7 +113,12 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                 key: Key("_searchButton"),
                 onPressed: () async {
                   HorarioMarcado _horarioMarcadoResponse = await _salvarHorarioMarcado(_horarioMarcado);
-                  // TODO: ABRIR PAGINA DE HORARIO MARCADO => FAZER ELA
+                  if(_horarioMarcadoResponse.id != null) {
+                    _horarioMarcadoResponse.barbeiro.barbearia = widget.barbearia; 
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: _horarioMarcadoResponse,)));
+                  } else {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MarcarHorario(barbearia: widget.barbearia, barbeiro: widget.barbeiro, cliente: widget.cliente, data: widget.data, horario: widget.horario, minhaBarbearia: widget.minhaBarbearia,)));
+                  }
                 },
                 elevation: 3.0,
                 color: Colors.purple,

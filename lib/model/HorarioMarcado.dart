@@ -15,6 +15,7 @@ class HorarioMarcado {
 	Barbeiro barbeiro;
 	Cliente cliente;
   Servico servico;
+  String clienteNome;
 	DateTime dia;
 	DateTime cadastro;
 	DateTime alterado;

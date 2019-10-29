@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:appbarbearia_flutter/api/AuthApiService.dart';
 import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
+import 'package:appbarbearia_flutter/api/HorarioMarcadoApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
+import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
@@ -13,12 +15,14 @@ import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/pagina_teste.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 AuthApiService appAuth = new AuthApiService();
 String token;
 
 void main() async {
   Widget _defaultHome = new LoginPage(sucesso: true, open: true);
+  bool loginSucedido = false;
   File tokenFile = await appAuth.localFile;
   token = tokenFile.readAsStringSync();
   User responseUser = new User();
@@ -30,8 +34,14 @@ void main() async {
       responseUser = await fUser;
       await fUser.whenComplete(() {
         _defaultHome = HomePage(user: responseUser, sucesso: true, open: true, mensagem: "");
+        loginSucedido = true;
       });
     }
+  }
+
+  List<HorarioMarcado> horariosMarcados = new List<HorarioMarcado>();
+  if(loginSucedido) {
+    horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(responseUser);
   }
 
   // Run app!
@@ -40,7 +50,7 @@ void main() async {
     home: _defaultHome,
     routes: <String, WidgetBuilder>{
       // Set routes for using the Navigator.
-      '/home': (BuildContext context) => new HomePage(user: responseUser, sucesso: true, open: true, mensagem: ""),
+      '/home': (BuildContext context) => new HomePage(user: responseUser, sucesso: true, open: true, mensagem: "", horariosMarcados: horariosMarcados,),
       '/login': (BuildContext context) =>
           new LoginPage(sucesso: true, open: true)
     },
@@ -52,9 +62,10 @@ class HomePage extends StatefulWidget {
   final bool sucesso;
   final bool open;
   final String mensagem;
+  final List<HorarioMarcado> horariosMarcados;
   // final List<HorarioMarcado> horariosMarcados;
 
-  const HomePage({this.user, this.sucesso, this.open, this.mensagem});
+  const HomePage({this.user, this.sucesso, this.open, this.mensagem, this.horariosMarcados});
   // const HomePage({this.user, this.horariosMarcados});
 
 
@@ -66,12 +77,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return widget.user.cliente != null
-        ? _buildHomePageCliente(context, widget.user)
-        : _buildHomePageBarbearia(context, widget.user);
+        ? _buildHomePageCliente(context, widget.user, widget.horariosMarcados)
+        : _buildHomePageBarbearia(context, widget.user, widget.horariosMarcados);
   }
 }
 
-Widget _buildHomePageCliente(BuildContext context, User user) {
+Widget _buildHomePageCliente(BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
+  DateFormat dateFormat = new DateFormat("HH:mm");
+  DateFormat dateFormatApenasDia = new DateFormat("dd/MM");
+
   return new Scaffold(
     appBar: new AppBar(
       title: new Text("Olá, " + user.cliente.nome),
@@ -141,45 +155,35 @@ Widget _buildHomePageCliente(BuildContext context, User user) {
       ),
     ),
     body: new Container(
-      child: new Center(
-        child: ListView(
-          children: <Widget>[
-            Card(
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                          "Horarios Marcados",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center,
-                        ),
-                    Divider(),
-                    // ListView.builder(
-                    //   itemCount: horariosMarcados.length,
-                    //   itemBuilder: (context, i) {
-                    //     return new GestureDetector(
-                    //       Card(
-                    //         child: Column(
-                    //           children: <Widget>[
-                    //             Text("Horario: $horariosMarcados[i].horario"),                            
-                    //           ],
-                    //         ),
-                    //       ),
-                    //     );
-                    //   },
-                    // )
-                  ],
-                ),
-              ),
-            ),
-          ],
+      child: Wrap(
+        children: <Widget>[
+        Center(
+          child: Text("Horários Marcados"),
         ),
+        for(HorarioMarcado horarioMarcado in horariosMarcados) GestureDetector(
+          child: Card(
+            child: Wrap(
+              children: <Widget>[
+                Text(
+                  "Dia ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(dateFormatApenasDia.format(horarioMarcado.dia) +
+                    " as " +
+                    dateFormat.format(horarioMarcado.horario.hora)),
+              ],
+            ),
+          ),
+        )
+        ],
       ),
     ),
   );
 }
 
-Widget _buildHomePageBarbearia(BuildContext context, User user) {
+Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
+  DateFormat dateFormat = new DateFormat("HH:mm");
+  DateFormat dateFormatApenasDia = new DateFormat("dd/MM");
   return new Scaffold(
     appBar: new AppBar(
       title: new Text("Olá, " + user.barbeiro.nome),
@@ -272,10 +276,27 @@ Widget _buildHomePageBarbearia(BuildContext context, User user) {
       ),
     ),
     body: new Container(
-      child: new Center(
-        child: ListView(
-          children: <Widget>[Text("HOME PAGE")],
+      child: Wrap(
+        children: <Widget>[
+        Center(
+          child: Text("Horários Marcados"),
         ),
+        for(HorarioMarcado horarioMarcado in horariosMarcados) GestureDetector(
+          child: Card(
+            child: Wrap(
+              children: <Widget>[
+                Text(
+                  "Dia ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text(dateFormatApenasDia.format(horarioMarcado.dia) +
+                    " as " +
+                    dateFormat.format(horarioMarcado.horario.hora)),
+              ],
+            ),
+          ),
+        )
+        ],
       ),
     ),
   );

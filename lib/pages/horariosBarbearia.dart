@@ -14,9 +14,10 @@ class HorariosBarbearia extends StatefulWidget {
   final User loggedUser;
   final List<Horario> horariosBarbearia;
   final DateTime data;
+  final bool minhaBarbearia;
 
   const HorariosBarbearia(
-      {this.barbearia, this.loggedUser, this.horariosBarbearia, this.data});
+      {this.barbearia, this.loggedUser, this.horariosBarbearia, this.data, this.minhaBarbearia});
 
   @override
   _HorariosBarbeariaState createState() => _HorariosBarbeariaState();
@@ -44,7 +45,7 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
         title: Text("Horarios"),
       ),
       body: Container(
-        child: Column(
+        child: ListView(
           children: <Widget>[
             DateTimePickerFormField(
               // TODO: ADICIONAR VALIDATOR PRA NÃO DEIXAR PROCURAR SEM DATA
@@ -101,6 +102,7 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
                                 loggedUser: widget.loggedUser,
                                 horariosBarbearia: _horariosBarbearia,
                                 data: _data,
+                                minhaBarbearia: widget.minhaBarbearia
                               )));
                 },
                 elevation: 3.0,
@@ -120,7 +122,9 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
                             barbearia: widget.barbearia,
                             horario: horario,
                             data: widget.data,
+                            minhaBarbearia: widget.minhaBarbearia,
                             cliente: null,
+                            barbeiro: widget.loggedUser.barbeiro,
                           )));
                 },
                 child: Card(

@@ -165,12 +165,15 @@ DateFormat dateFormat = DateFormat("HH:mm");
           ],
         ),
         Text(""),
-        RaisedButton(
+         ButtonTheme(
+          minWidth: double.infinity,
+          child: RaisedButton(
           child: Text("Marcar horário"),
           elevation: 5.0,
           onPressed: () {
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorariosBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser, horariosBarbearia: new List<Horario>(), data: null,)));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorariosBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser, horariosBarbearia: new List<Horario>(), data: null, minhaBarbearia: true,)));
           },          
+        ),
         ),
         !widget.open && widget.sucesso ? Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.green)) : Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.red),),
       ],

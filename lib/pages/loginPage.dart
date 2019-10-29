@@ -1,5 +1,7 @@
 import 'package:appbarbearia_flutter/api/AuthApiService.dart';
+import 'package:appbarbearia_flutter/api/HorarioMarcadoApi.dart';
 import 'package:appbarbearia_flutter/main.dart';
+import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbeiro.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
@@ -150,12 +152,13 @@ class _LoginPageState extends State<LoginPage> {
     bool response = await fBool;
     await fBool.whenComplete(() async {
       if (response) {
-        Future<User> fUser = authService.getUserByUsername(user.username);
+        Future<User> fUser = authService.getUserByUsername(user .username);
         User responseUser = await fUser;
-        fUser.whenComplete(() {
+        fUser.whenComplete(() async {
+          List<HorarioMarcado> horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(responseUser);
           Navigator.pushReplacement(
               context, MaterialPageRoute(
-              builder: (BuildContext context) => HomePage(user: responseUser, sucesso: true, open: true, mensagem: "")));
+              builder: (BuildContext context) => HomePage(user: responseUser, sucesso: true, open: true, mensagem: "", horariosMarcados: horariosMarcados,)));
         });
       } else {
         Navigator.pushReplacement(
