@@ -107,7 +107,9 @@ class _MeusServicosState extends State<_MeusServicos> {
               children: <Widget>[
                 Text(widget.barbearia.servicos[i].descricao,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Text("Preço = R\$" +widget.barbearia.servicos[i].preco.toString(), style: TextStyle(fontSize: 20),),
+                Padding (padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
               ],
             ),
           ),

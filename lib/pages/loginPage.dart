@@ -42,10 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Image.network('https://i.ibb.co/xGYC5VG/kisspng-comb-barber-hairstyle-hairdresser-vector-barber-tools-5a951d19d21015-1148711815197217538604.png', height: 120.0 ,width: 80.0 ,),
           Text("App Barbearia", style: TextStyle(fontSize: 30.0), textAlign: TextAlign.center,), 
-          Text(" "),
-          Text(" "),
-          Text(" "),
-          Text(" "),
+          Padding (padding: EdgeInsets.fromLTRB(0, 60, 0, 0)),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             autocorrect: false,
@@ -84,7 +81,19 @@ class _LoginPageState extends State<LoginPage> {
               )
             ],
           ),
-          Divider(),
+          Padding (padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
+          Row(
+             children: <Widget>[
+                 Expanded(
+                     child: Divider()
+                    ),
+                            Text("OU"),   
+                 Expanded(
+              child: Divider()
+              ),
+            ]
+          ),
+          Padding (padding: EdgeInsets.fromLTRB(0, 15, 0, 0)),
           Row(
               children: <Widget>[
                 Center(

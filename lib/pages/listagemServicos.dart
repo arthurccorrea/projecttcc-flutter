@@ -24,9 +24,8 @@ class _ListagemServicosState extends State<ListagemServicos> {
           return ListView(
             children: <Widget>[
               FlatButton(
-                child: Text(widget.servicos[i].descricao),
-                onPressed: () {
-                  
+                child: Text(widget.servicos[i].descricao, style: TextStyle(fontSize: 20)),
+                onPressed: () {                  
                 },
               )
             ],
