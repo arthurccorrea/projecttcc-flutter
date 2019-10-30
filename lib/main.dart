@@ -35,16 +35,21 @@ void main() async {
       Future<User> fUser = authService.getUserByUsername(username);
       loginSucedido = true;
       responseUser = await fUser;
-      
-      if(loginSucedido) {
-        horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(responseUser);
+
+      if (loginSucedido) {
+        horariosMarcados =
+            await HorarioMarcadoApi.findHorarioMarcadoByUser(responseUser);
       }
       await fUser.whenComplete(() {
-        _defaultHome = HomePage(user: responseUser, sucesso: true, open: true, mensagem: "", horariosMarcados: horariosMarcados);
+        _defaultHome = HomePage(
+            user: responseUser,
+            sucesso: true,
+            open: true,
+            mensagem: "",
+            horariosMarcados: horariosMarcados);
       });
     }
   }
-
 
   // Run app!
   runApp(new MaterialApp(
@@ -52,7 +57,12 @@ void main() async {
     home: _defaultHome,
     routes: <String, WidgetBuilder>{
       // Set routes for using the Navigator.
-      '/home': (BuildContext context) => new HomePage(user: responseUser, sucesso: true, open: true, mensagem: "", horariosMarcados: horariosMarcados),
+      '/home': (BuildContext context) => new HomePage(
+          user: responseUser,
+          sucesso: true,
+          open: true,
+          mensagem: "",
+          horariosMarcados: horariosMarcados),
       '/login': (BuildContext context) =>
           new LoginPage(sucesso: true, open: true)
     },
@@ -67,9 +77,13 @@ class HomePage extends StatefulWidget {
   final List<HorarioMarcado> horariosMarcados;
   // final List<HorarioMarcado> horariosMarcados;
 
-  const HomePage({this.user, this.sucesso, this.open, this.mensagem, this.horariosMarcados});
+  const HomePage(
+      {this.user,
+      this.sucesso,
+      this.open,
+      this.mensagem,
+      this.horariosMarcados});
   // const HomePage({this.user, this.horariosMarcados});
-
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -80,17 +94,27 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return widget.user.cliente != null
         ? _buildHomePageCliente(context, widget.user, widget.horariosMarcados)
-        : _buildHomePageBarbearia(context, widget.user, widget.horariosMarcados);
+        : _buildHomePageBarbearia(
+            context, widget.user, widget.horariosMarcados);
   }
 }
 
-Widget _buildHomePageCliente(BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
+Widget _buildHomePageCliente(
+  BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
   DateFormat dateFormat = new DateFormat("HH:mm");
   DateFormat dateFormatApenasDia = new DateFormat("dd/MM");
 
   return new Scaffold(
     appBar: new AppBar(
       title: new Text("Olá, " + user.cliente.nome),
+      actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh, color: Colors.white,),
+            onPressed: () {
+              
+            },
+          )
+        ],
       elevation: defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
     ),
     drawer: new Drawer(
@@ -128,7 +152,9 @@ Widget _buildHomePageCliente(BuildContext context, User user, List<HorarioMarcad
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new ListagemBarbearia(loggedUser: user,)));
+                  builder: (BuildContext context) => new ListagemBarbearia(
+                        loggedUser: user,
+                      )));
             },
           ),
           new ListTile(
@@ -159,36 +185,47 @@ Widget _buildHomePageCliente(BuildContext context, User user, List<HorarioMarcad
     body: new Container(
       child: Wrap(
         children: <Widget>[
-        Center(
-          child: Text("Horários Marcados"),
-        ),
-        for(HorarioMarcado horarioMarcado in horariosMarcados) GestureDetector(
-          child: Card(
-            child: Wrap(
-              children: <Widget>[
-                Text(
-                  "Dia ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                Text(dateFormatApenasDia.format(horarioMarcado.dia) +
-                    " as " +
-                    dateFormat.format(horarioMarcado.horario.hora)),
-              ],
-            ),
+          Center(
+            child: Text("Horários Marcados"),
           ),
-        )
+          for (HorarioMarcado horarioMarcado in horariosMarcados)
+            GestureDetector(
+              child: Card(
+                child: Wrap(
+                  children: <Widget>[
+                    Text(
+                      "Dia ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(dateFormatApenasDia.format(horarioMarcado.dia) +
+                        " as " +
+                        dateFormat.format(horarioMarcado.horario.hora)),
+                  ],
+                ),
+              ),
+            )
         ],
       ),
     ),
   );
 }
 
-Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
+Widget _buildHomePageBarbearia(
+    BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
   DateFormat dateFormat = new DateFormat("HH:mm");
   DateFormat dateFormatApenasDia = new DateFormat("dd/MM");
   return new Scaffold(
     appBar: new AppBar(
       title: new Text("Olá, " + user.barbeiro.nome),
+      actions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.refresh, color: Colors.white,),
+          onPressed: () async {
+            List<HorarioMarcado> _horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(user);
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => new HomePage(horariosMarcados: _horariosMarcados, user: user, mensagem: "", open: true, sucesso: true,)));
+          },
+        )
+      ],
       elevation: defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
     ),
     drawer: new Drawer(
@@ -216,18 +253,26 @@ Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarc
             trailing: new Icon(Icons.add),
             onTap: () async {
               Navigator.of(context).pop();
-             Future<List<Barbearia>> fBarbearias = _findCompletoMinhasBarbearias(user);
-             List<Barbearia> minhasBarbearias  = new List<Barbearia>();
-             await fBarbearias.whenComplete( () async {
-             minhasBarbearias = await fBarbearias;
-             });
-             if(minhasBarbearias.length == 1) {
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new MinhaBarbearia(barbearia: minhasBarbearias[0], loggedUser: user, open: true, sucesso: true, mensagem: "",)));
-             } else {
-               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new ListagemBarbearia(barbearias: minhasBarbearias, loggedUser: user)));
-             }
+              Future<List<Barbearia>> fBarbearias =
+                  _findCompletoMinhasBarbearias(user);
+              List<Barbearia> minhasBarbearias = new List<Barbearia>();
+              await fBarbearias.whenComplete(() async {
+                minhasBarbearias = await fBarbearias;
+              });
+              if (minhasBarbearias.length == 1) {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new MinhaBarbearia(
+                          barbearia: minhasBarbearias[0],
+                          loggedUser: user,
+                          open: true,
+                          sucesso: true,
+                          mensagem: "",
+                        )));
+              } else {
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new ListagemBarbearia(
+                        barbearias: minhasBarbearias, loggedUser: user)));
+              }
             },
           ),
           new ListTile(
@@ -236,10 +281,13 @@ Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarc
             onTap: () async {
               Future<List<Barbearia>> fBarbearias = _listaBarbearias();
               List<Barbearia> barbearias = await fBarbearias;
-              await fBarbearias.whenComplete( () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new ListagemBarbearia(loggedUser: user, barbearias: barbearias,)));
+              await fBarbearias.whenComplete(() {
+                Navigator.of(context).pop();
+                Navigator.of(context).push(new MaterialPageRoute(
+                    builder: (BuildContext context) => new ListagemBarbearia(
+                          loggedUser: user,
+                          barbearias: barbearias,
+                        )));
               });
             },
           ),
@@ -258,7 +306,11 @@ Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarc
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new CadastroBarbearia(open: true, sucesso: true, mensagem: "", loggedUser: user)));
+                  builder: (BuildContext context) => new CadastroBarbearia(
+                      open: true,
+                      sucesso: true,
+                      mensagem: "",
+                      loggedUser: user)));
             },
           ),
           new Divider(),
@@ -278,29 +330,81 @@ Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarc
       ),
     ),
     body: new Container(
-      child: Wrap(
+      child: ListView(
         children: <Widget>[
-        Center(
-          child: Text("Horários Marcados"),
-        ),
-        for(HorarioMarcado horarioMarcado in horariosMarcados) GestureDetector(
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: horarioMarcado, loggedUser: user,)));
-          },
-          child: Card(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  "Dia ",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Divider(thickness: 1, color: Colors.black),
+              Center(
+                child: Text("Horários Marcados a partir de hoje", style: 
+                TextStyle(
+                  fontSize: 23,
+
+                ),),
+              ),
+              Divider(thickness: 1, color: Colors.black,),
+              for (HorarioMarcado horarioMarcado in horariosMarcados)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                new HorarioMarcadoPage(
+                                  horarioMarcado: horarioMarcado,
+                                  loggedUser: user,
+                                )));
+                  },
+                  child: Card(
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            horarioMarcado.cliente != null ? Text(horarioMarcado.cliente.nome) : Text(horarioMarcado.clienteNome),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 17, 0, 17),
+                            ),
+                            Text(
+                              "Dia ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(dateFormatApenasDia
+                                    .format(horarioMarcado.dia) +
+                                " as " +
+                                dateFormat.format(horarioMarcado.horario.hora)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                Text(dateFormatApenasDia.format(horarioMarcado.dia) +
-                    " as " +
-                    dateFormat.format(horarioMarcado.horario.hora)),
-              ],
-            ),
+              ButtonTheme(
+                child: RaisedButton(
+                    textColor: Colors.white,
+                    child: Text("Ver a listagem de barbearias"),
+                    onPressed: () async {
+                      Future<List<Barbearia>> fBarbearias = _listaBarbearias();
+                      List<Barbearia> barbearias = await fBarbearias;
+                      await fBarbearias.whenComplete(() {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(new MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                new ListagemBarbearia(
+                                  loggedUser: user,
+                                  barbearias: barbearias,
+                                )));
+                      });
+                    }),
+              )
+            ],
           ),
-        )
         ],
       ),
     ),
@@ -308,7 +412,6 @@ Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarc
 }
 
 Future<List<Barbearia>> _listaBarbearias() async {
-
   Future<List<Barbearia>> fBarbearias = BarbeariaApi.findAll();
   List<Barbearia> barbearias = await fBarbearias;
 
@@ -316,8 +419,8 @@ Future<List<Barbearia>> _listaBarbearias() async {
 }
 
 Future<List<Barbearia>> _findCompletoMinhasBarbearias(User user) async {
-
-  Future<List<Barbearia>> fBarbearia = BarbeariaApi.findCompletoMinhasBarbearias(user);
+  Future<List<Barbearia>> fBarbearia =
+      BarbeariaApi.findCompletoMinhasBarbearias(user);
   List<Barbearia> minhasBarbearias = await fBarbearia;
   return minhasBarbearias;
 }
