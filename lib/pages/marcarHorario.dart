@@ -40,6 +40,7 @@ class _MarcarHorarioState extends State<MarcarHorario> {
     _horarioMarcado.barbeiro = widget.barbeiro;
     _horarioMarcado.cliente = widget.cliente;
     _horarioMarcado.horario = widget.horario;
+    _horarioMarcado.servico = _servico;
     _horarioMarcado.dia = widget.data;
     _horarioMarcado.barbearia = widget.barbearia;
     super.initState();
@@ -119,8 +120,9 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                 onPressed: () async {
                   HorarioMarcado _horarioMarcadoResponse = await _salvarHorarioMarcado(_horarioMarcado);
                   if(_horarioMarcadoResponse.id != null) {
-                    _horarioMarcadoResponse.barbeiro.barbearia = widget.barbearia; 
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: _horarioMarcadoResponse, loggedUser: widget.loggedUser,)));
+                    _horarioMarcadoResponse.barbeiro.barbearia = widget.barbearia;
+                    List<HorarioMarcado> _horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(widget.loggedUser);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => new HomePage(horariosMarcados: _horariosMarcados, user: widget.loggedUser, mensagem: "Horario marcada para " + formatDia.format(_horarioMarcadoResponse.dia) + "as" + formatHora.format(_horarioMarcadoResponse.horario.hora), open: false, sucesso: true,)));
                   } else {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MarcarHorario(barbearia: widget.barbearia, barbeiro: widget.barbeiro, cliente: widget.cliente, data: widget.data, horario: widget.horario, minhaBarbearia: widget.minhaBarbearia,)));
                   }
@@ -138,8 +140,9 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                 onPressed: () async {
                   HorarioMarcado _horarioMarcadoResponse = await _marcarHorarioAlmoco(_horarioMarcado);
                   if(_horarioMarcadoResponse.id != null) {
-                    _horarioMarcadoResponse.barbeiro.barbearia = widget.barbearia; 
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: _horarioMarcadoResponse, loggedUser: widget.loggedUser,)));
+                    _horarioMarcadoResponse.barbeiro.barbearia = widget.barbearia;
+                    List<HorarioMarcado> _horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(widget.loggedUser);
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => new HomePage(horariosMarcados: _horariosMarcados, user: widget.loggedUser, mensagem: "Horario marcada para " + formatDia.format(_horarioMarcadoResponse.dia) + "as" + formatHora.format(_horarioMarcadoResponse.horario.hora), open: false, sucesso: true,)));
                   } else {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MarcarHorario(barbearia: widget.barbearia, barbeiro: widget.barbeiro, cliente: widget.cliente, data: widget.data, horario: widget.horario, minhaBarbearia: widget.minhaBarbearia,)));
                   }

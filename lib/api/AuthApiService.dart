@@ -25,7 +25,8 @@ class AuthApiService {
           return true;
       }
     }
-    return false;
+    bool isTokenValid = await validarToken(token);
+    return isTokenValid;
   }
 
   Future<String> obterToken() async {

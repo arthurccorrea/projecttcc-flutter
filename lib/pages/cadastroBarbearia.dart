@@ -87,7 +87,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.location_city),
+                    icon: Icon(Icons.map),
                     hasFloatingPlaceholder: true,
                     hintText: "Cidade"
                   ),
@@ -104,7 +104,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.landscape),
+                    icon: Icon(Icons.location_city),
                     hasFloatingPlaceholder: true,
                     hintText: "Logradouro"
                   ),
@@ -237,7 +237,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                           }
                         },
                         elevation: 3.0,
-                        color: Colors.purple,
+                        // color: Colors.purple,
                         textColor: Colors.white,
                         ),
                       ),

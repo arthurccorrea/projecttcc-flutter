@@ -118,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                             builder: (BuildContext context) =>
                                 CadastroCliente()));
                       },
+                      textColor: Colors.white,
                     ),
                   ),
                 ),
@@ -136,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (BuildContext context) =>
                               CadastroBarbeiro()));
                     },
+                    textColor: Colors.white,
                   ),
                 ),
               ),
