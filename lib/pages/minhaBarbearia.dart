@@ -179,7 +179,8 @@ DateFormat dateFormat = DateFormat("HH:mm");
           elevation: 5.0,
           onPressed: () {
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorariosBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser, horariosBarbearia: new List<Horario>(), data: null, minhaBarbearia: true,)));
-          },          
+          },     
+          textColor: Colors.white,     
         ),
         ),
         !widget.open && widget.sucesso ? Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.green)) : Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.red),),
@@ -213,6 +214,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
           key: _formKey,
         child: ListView(
           children: <Widget>[
+            Text("Nome do serviço", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             TextFormField(
               autocorrect: false,
               validator: (value) {
@@ -231,6 +233,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
                 _servico.descricao = descricao;
               },
             ),
+            Text("Valor", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
             TextFormField(
               autocorrect: false,
               validator: (value) {
@@ -271,7 +274,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
                     }
                   },
                   elevation: 3.0,
-                  color: Colors.purple,
+                  //color: Colors.purple,
                   textColor: Colors.white,
                   ),
                 ),
