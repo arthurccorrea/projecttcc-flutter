@@ -1,3 +1,4 @@
+import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -13,9 +14,11 @@ class HorarioMarcado {
 	String id;
 	Horario horario;
 	Barbeiro barbeiro;
+  Barbearia barbearia;
 	Cliente cliente;
   Servico servico;
   String clienteNome;
+  bool cancelado;
 	DateTime dia;
 	DateTime cadastro;
 	DateTime alterado;

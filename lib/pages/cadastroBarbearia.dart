@@ -60,7 +60,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                   },
                   controller: _nome,
                   onChanged: (nome){
-                    barbearia.setNome(nome);
+                    barbearia.nome = nome;
                   },
                 ),
                 TextFormField(
@@ -77,7 +77,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     return null;
                   },
                   onChanged: (descricao){
-                    barbearia.setDescricao(descricao);
+                    barbearia.descricao = descricao;
                   },
                 ),
                 Divider(),
@@ -99,7 +99,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     return null;
                   },
                   onChanged: (cidade){
-                    barbearia.setCidade(cidade);
+                    barbearia.cidade = cidade;
                   },
                 ),
                 TextFormField(
@@ -116,7 +116,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     return null;
                   },
                   onChanged: (logradouro){
-                    barbearia.setEndereco(logradouro);
+                    barbearia.endereco = logradouro;
                   },
                 ),
                   Row(
@@ -129,7 +129,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                       value: _estado,
                       onChanged: (Estados newValue) {
                         setState(() {
-                          barbearia.setEstado(newValue);
+                          barbearia.estado = newValue;
                           _estado = newValue;
                         });
                       },
@@ -157,7 +157,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                         onChanged: (int newValue){
                           setState((){
                             _horaAbertura = newValue;
-                            barbearia.setHoraAbertura(newValue);
+                            barbearia.horaAbertura= newValue;
                           });
                         },
                         items: _horas.map((int _valueAbertura) {
@@ -172,7 +172,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                         onChanged: (int newValue){
                           setState((){
                             _minutoAbertura = newValue;
-                            barbearia.setMinutoAbertura(newValue);
+                            barbearia.minutoAbertura = newValue;
                           });
                         },
                         items: _minutos.map((int _valueFechamento) {
@@ -194,7 +194,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                         onChanged: (int newValue){
                           setState((){
                             _horaFechamento = newValue;
-                            barbearia.setHoraFechamento(newValue);
+                            barbearia.horaFechamento = newValue;
                           });
                         },
                         items: _horas.map((int _value) {
@@ -209,7 +209,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                         onChanged: (int newValue){
                           setState((){
                             _minutoFechamento = newValue;
-                            barbearia.setMinutoFechamento(newValue);
+                            barbearia.minutoFechamento = newValue;
                           });
                         },
                         items: _minutos.map((int _value) {

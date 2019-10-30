@@ -5,6 +5,7 @@ import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Horario.dart';
 import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
+import 'package:appbarbearia_flutter/pages/editarServico.dart';
 import 'package:appbarbearia_flutter/pages/horariosBarbearia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,6 +44,7 @@ class _MinhaBarbeariaState extends State<MinhaBarbearia> {
     );
     meusServicos = new _MeusServicos(
       barbearia: widget.barbearia,
+      loggedUser: widget.loggedUser,
     );
     cadastroServico = new _CadastroServico(barbearia: widget.barbearia, loggedUser: widget.loggedUser);
 
@@ -87,8 +89,9 @@ class _MinhaBarbeariaState extends State<MinhaBarbearia> {
 
 class _MeusServicos extends StatefulWidget {
   final Barbearia barbearia;
+  final User loggedUser;
 
-  const _MeusServicos({this.barbearia});
+  const _MeusServicos({this.barbearia, this.loggedUser});
 
   @override
   _MeusServicosState createState() => _MeusServicosState();
@@ -113,7 +116,9 @@ class _MeusServicosState extends State<_MeusServicos> {
               ],
             ),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new EditarServico(barbearia: widget.barbearia, loggedUser: widget.loggedUser, servico: widget.barbearia.servicos[i],)));
+          },
         );
       },
     ));
@@ -260,7 +265,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
                   onPressed: () async {  
                     Barbearia responseBarbearia =  await _saveServico(_servico, widget.barbearia);
                     if(responseBarbearia.servicos.length == (widget.barbearia.servicos.length + 1)){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MinhaBarbearia(barbearia: responseBarbearia, loggedUser: widget.loggedUser, sucesso: true, open: false, mensagem: "Serviço efetuado com sucesso!",)));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MinhaBarbearia(barbearia: responseBarbearia, loggedUser: widget.loggedUser, sucesso: true, open: false, mensagem: "Serviço cadastrado com sucesso!",)));
                     } else {
                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MinhaBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser, sucesso: false, open: false, mensagem: "Algo deu errado no cadastro de serviço!")));
                     }
@@ -292,5 +297,4 @@ Future<Barbearia> _saveServico(Servico servico, Barbearia barbearia) async {
   Barbearia responseBarbearia = await fBarbearia;
 
   return responseBarbearia;
-//  return responseServico;
 }

@@ -9,6 +9,7 @@ import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
 import 'package:appbarbearia_flutter/pages/form_marcarHorario.dart';
+import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
 import 'package:appbarbearia_flutter/pages/listagemBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/loginPage.dart';
 import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
@@ -26,23 +27,24 @@ void main() async {
   File tokenFile = await appAuth.localFile;
   token = tokenFile.readAsStringSync();
   User responseUser = new User();
+  List<HorarioMarcado> horariosMarcados = new List<HorarioMarcado>();
   if (token != null && token.isNotEmpty) {
     bool response = await appAuth.validarToken(token);
     if (response) {
       String username = await authService.getLoggedUserUsername();
       Future<User> fUser = authService.getUserByUsername(username);
+      loginSucedido = true;
       responseUser = await fUser;
+      
+      if(loginSucedido) {
+        horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(responseUser);
+      }
       await fUser.whenComplete(() {
-        _defaultHome = HomePage(user: responseUser, sucesso: true, open: true, mensagem: "");
-        loginSucedido = true;
+        _defaultHome = HomePage(user: responseUser, sucesso: true, open: true, mensagem: "", horariosMarcados: horariosMarcados);
       });
     }
   }
 
-  List<HorarioMarcado> horariosMarcados = new List<HorarioMarcado>();
-  if(loginSucedido) {
-    horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(responseUser);
-  }
 
   // Run app!
   runApp(new MaterialApp(
@@ -50,7 +52,7 @@ void main() async {
     home: _defaultHome,
     routes: <String, WidgetBuilder>{
       // Set routes for using the Navigator.
-      '/home': (BuildContext context) => new HomePage(user: responseUser, sucesso: true, open: true, mensagem: "", horariosMarcados: horariosMarcados,),
+      '/home': (BuildContext context) => new HomePage(user: responseUser, sucesso: true, open: true, mensagem: "", horariosMarcados: horariosMarcados),
       '/login': (BuildContext context) =>
           new LoginPage(sucesso: true, open: true)
     },
@@ -282,8 +284,11 @@ Widget _buildHomePageBarbearia(BuildContext context, User user, List<HorarioMarc
           child: Text("Horários Marcados"),
         ),
         for(HorarioMarcado horarioMarcado in horariosMarcados) GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: horarioMarcado, loggedUser: user,)));
+          },
           child: Card(
-            child: Wrap(
+            child: Column(
               children: <Widget>[
                 Text(
                   "Dia ",

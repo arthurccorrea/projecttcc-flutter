@@ -1,10 +1,12 @@
 import 'package:appbarbearia_flutter/api/HorarioMarcadoApi.dart';
+import 'package:appbarbearia_flutter/main.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Cliente.dart';
 import 'package:appbarbearia_flutter/model/Horario.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/Servico.dart';
+import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -16,8 +18,9 @@ class MarcarHorario extends StatefulWidget {
   final Barbeiro barbeiro;
   final Cliente cliente;
   final bool minhaBarbearia;
+  final User loggedUser;
 
-  const MarcarHorario({this.barbearia, this.horario, this.data, this.barbeiro, this.cliente, this.minhaBarbearia});
+  const MarcarHorario({this.barbearia, this.horario, this.data, this.barbeiro, this.cliente, this.minhaBarbearia, this.loggedUser});
 
   @override
   _MarcarHorarioState createState() => _MarcarHorarioState();
@@ -38,6 +41,7 @@ class _MarcarHorarioState extends State<MarcarHorario> {
     _horarioMarcado.cliente = widget.cliente;
     _horarioMarcado.horario = widget.horario;
     _horarioMarcado.dia = widget.data;
+    _horarioMarcado.barbearia = widget.barbearia;
     super.initState();
   }
 
@@ -48,6 +52,7 @@ class _MarcarHorarioState extends State<MarcarHorario> {
         title: Text("Marcar horário em " + widget.barbearia.nome),
       ),
       body: Container(
+        margin: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
             Row(
@@ -115,7 +120,7 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                   HorarioMarcado _horarioMarcadoResponse = await _salvarHorarioMarcado(_horarioMarcado);
                   if(_horarioMarcadoResponse.id != null) {
                     _horarioMarcadoResponse.barbeiro.barbearia = widget.barbearia; 
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: _horarioMarcadoResponse,)));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: _horarioMarcadoResponse, loggedUser: widget.loggedUser,)));
                   } else {
                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MarcarHorario(barbearia: widget.barbearia, barbeiro: widget.barbeiro, cliente: widget.cliente, data: widget.data, horario: widget.horario, minhaBarbearia: widget.minhaBarbearia,)));
                   }
@@ -125,6 +130,25 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                 textColor: Colors.white,
               ),
             ),
+            widget.minhaBarbearia ? ButtonTheme(
+              minWidth: double.infinity,
+              child: RaisedButton(
+                child: Text("Marcar almoco!"),
+                key: Key("_searchButton"),
+                onPressed: () async {
+                  HorarioMarcado _horarioMarcadoResponse = await _marcarHorarioAlmoco(_horarioMarcado);
+                  if(_horarioMarcadoResponse.id != null) {
+                    _horarioMarcadoResponse.barbeiro.barbearia = widget.barbearia; 
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new HorarioMarcadoPage(horarioMarcado: _horarioMarcadoResponse, loggedUser: widget.loggedUser,)));
+                  } else {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new MarcarHorario(barbearia: widget.barbearia, barbeiro: widget.barbeiro, cliente: widget.cliente, data: widget.data, horario: widget.horario, minhaBarbearia: widget.minhaBarbearia,)));
+                  }
+                },
+                elevation: 3.0,
+                color: Colors.brown,
+                textColor: Colors.white,
+              ),
+            ) : Text(""),
           ],
         ),
       ),
@@ -136,5 +160,10 @@ Future<HorarioMarcado> _salvarHorarioMarcado(HorarioMarcado horarioMarcado) asyn
   Future<HorarioMarcado> fHorarioMarcado  = HorarioMarcadoApi.salvarHorarioMarcado(horarioMarcado);
   HorarioMarcado responseHorarioMarcado = await fHorarioMarcado;
 
+  return responseHorarioMarcado;
+}
+
+Future<HorarioMarcado> _marcarHorarioAlmoco(HorarioMarcado horarioMarcado) async {
+  HorarioMarcado responseHorarioMarcado = await HorarioMarcadoApi.salvarHorarioAlmoco(horarioMarcado);
   return responseHorarioMarcado;
 }

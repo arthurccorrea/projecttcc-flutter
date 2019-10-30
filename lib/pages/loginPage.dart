@@ -78,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       validateLogin(_user);
                     },
+                    textColor: Colors.white,
                   ),
                 ),
               )

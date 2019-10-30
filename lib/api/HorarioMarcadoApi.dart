@@ -28,21 +28,66 @@ class HorarioMarcadoApi {
     return responseHorarioMarcado;
   }
 
+  static Future<HorarioMarcado> salvarHorarioAlmoco(HorarioMarcado horarioMarcado) async {
+    Map<String, String> headers = new Map<String, String>();
+    headers["Content-Type"] = "application/json";
+    String token = await authService.obterToken();
+    headers["Authorization"] = "Bearer $token";
+    String horarioMarcadoJson = json.encode(horarioMarcado.toJson());
+
+    HorarioMarcado responseHorarioMarcado = new HorarioMarcado();
+    Future<http.Response> fResponse = http.post(baseUrl + "horarioAlmoco", body: horarioMarcadoJson, headers: headers);
+    http.Response response = await fResponse;
+    await fResponse.whenComplete(() {
+      if (response.statusCode == 200) {
+        responseHorarioMarcado = HorarioMarcado.fromJson(json.decode(response.body));
+      }
+    });
+
+    return responseHorarioMarcado;
+  }
+
  static Future<List<HorarioMarcado>> findHorarioMarcadoByUser(User user) async{
     Map<String, String> headers = new Map<String, String>();
     headers["Content-Type"] = "application/json";
     String token = await authService.obterToken();
     headers["Authorization"] = "Bearer $token";
     String userId = user.id;
-    Future<http.Response> fResponse = http.get(baseUrl + "/horariosMarcadosUser/$userId", headers: headers);
+    Future<http.Response> fResponse = http.get(baseUrl + "horariosMarcadosUser/$userId", headers: headers);
     http.Response response = await fResponse;
     List<HorarioMarcado> horariosMarcados = new List<HorarioMarcado>();
 
     if(response.statusCode == 200) {
       var responseList = json.decode(response.body) as List;
-      horariosMarcados = responseList.map((i) => HorarioMarcado.fromJson(i)).toList();
+      if(responseList.isNotEmpty){
+        horariosMarcados = responseList.map((i) => HorarioMarcado.fromJson(i)).toList();
+      }
     }
 
     return horariosMarcados;
+  }
+
+  static Future<bool> cancelarHorario(HorarioMarcado horarioMarcado) async{
+    Map<String, String> headers = new Map<String, String>();
+    headers["Content-Type"] = "application/json";
+    String token = await authService.obterToken();
+    headers["Authorization"] = "Bearer $token";
+
+    String horarioMarcadoJson = json.encode(horarioMarcado.toJson());
+
+    HorarioMarcado responseHorarioMarcado = new HorarioMarcado();
+    Future<http.Response> fResponse = http.put(baseUrl + "cancelarHorario", body: horarioMarcadoJson, headers: headers);
+    http.Response response = await fResponse;
+    await fResponse.whenComplete(() {
+      if (response.statusCode == 200) {
+        responseHorarioMarcado = HorarioMarcado.fromJson(json.decode(response.body));
+      }
+    });
+    
+    if(responseHorarioMarcado.cancelado) {
+      return true;
+    }
+
+    return false;
   }
 }

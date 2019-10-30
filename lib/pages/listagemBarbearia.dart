@@ -1,13 +1,10 @@
+import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/paginaBarbearia.dart';
 import 'package:flutter/material.dart';
 
-
-
-
 class ListagemBarbearia extends StatefulWidget {
-
   final User loggedUser;
   final List<Barbearia> barbearias;
 
@@ -20,7 +17,6 @@ class ListagemBarbearia extends StatefulWidget {
 }
 
 class _ListagemBarebeariaState extends State<ListagemBarbearia> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,13 +29,20 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
               itemCount: widget.barbearias.length,
               itemBuilder: (context, i) {
                 return new GestureDetector(
-                  onTap: () {
+                  onTap: () async {
+                    Barbearia barbearia =
+                        await BarbeariaApi.findCompleteBarbeariaPorBarbeariaId(
+                            widget.barbearias[i].id);
                     Navigator.of(context).push(new MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            new PaginaBarbearia(barbearia: widget.barbearias[i])));
+                        builder: (BuildContext context) => new PaginaBarbearia(
+                            barbearia: barbearia,
+                            open: true,
+                            sucesso: true,
+                            loggedUser: widget.loggedUser,
+                            mensagem: "")));
                   },
                   child: new Card(
-                   margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
+                    margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -50,7 +53,7 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(
                                       12.0, 12.0, 12.0, 6.0),
-                                    child: Text(
+                                  child: Text(
                                     widget.barbearias[i].nome,
                                     style: TextStyle(
                                         fontSize: 22.0,

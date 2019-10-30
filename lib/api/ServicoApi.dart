@@ -25,4 +25,21 @@ class ServicoApi {
 
     return responseServico;
   }
+
+  static Future<bool> removeServico(Servico servico) async {
+    Map<String, String> headers = new Map<String, String>();
+    headers["Content-Type"] = "application/json";
+    String token = await authService.obterToken();
+    headers["Authorization"] = "Bearer $token";
+
+    Future<http.Response> fResponse =
+        http.delete(baseUrl + "/" + servico.id, headers: headers);
+    http.Response response = await fResponse;
+    
+    if(response.statusCode == 204){
+      return true;
+    }
+
+    return false;
+  }
 }

@@ -52,8 +52,9 @@ class AuthApiService {
     String headerToken = await obterToken();
     String tokenForHeader = "Bearer " + headerToken;
     Map<String, String> headers = new Map<String, String>();
-    headers['Authorization']=tokenForHeader;
-    String requestURL = baseUrl + "user/username/$username";
+    headers["Content-Type"] = "application/json";
+    headers["Authorization"]=tokenForHeader;
+    String requestURL = baseUrl + "users/username/$username";
     Future<http.Response> fResponse = http.get(requestURL, headers: headers);
     http.Response response = await fResponse;
     User user;
@@ -74,7 +75,7 @@ class AuthApiService {
     Map<String, String> headers = new Map<String, String>();
     headers["Content-type"]="application/json";
     headers["Authorization"] = "Bearer $tokenToValidate";
-    Future<http.Response> response = http.post(baseUrl + "autenticacao/validar-token", body: "Bearer " + tokenToValidate, headers: headers);
+    Future<http.Response> response = http.post(baseUrl + "users/validar-token", body: "Bearer " + tokenToValidate, headers: headers);
     http.Response tokenResponse = await response;
     if(tokenResponse.statusCode != 200){
       return false;

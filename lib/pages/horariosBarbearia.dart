@@ -125,6 +125,7 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
                             minhaBarbearia: widget.minhaBarbearia,
                             cliente: null,
                             barbeiro: widget.loggedUser.barbeiro,
+                            loggedUser: widget.loggedUser,
                           )));
                 },
                 child: Card(
