@@ -14,6 +14,7 @@ import 'package:appbarbearia_flutter/pages/listagemBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/loginPage.dart';
 import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/pagina_teste.dart';
+import 'package:appbarbearia_flutter/pages/pesquisasBarbearias.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -100,7 +101,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget _buildHomePageCliente(
-  BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
+    BuildContext context, User user, List<HorarioMarcado> horariosMarcados) {
   DateFormat dateFormat = new DateFormat("HH:mm");
   DateFormat dateFormatApenasDia = new DateFormat("dd/MM");
 
@@ -108,13 +109,25 @@ Widget _buildHomePageCliente(
     appBar: new AppBar(
       title: new Text("Olá, " + user.cliente.nome),
       actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.refresh, color: Colors.white,),
-            onPressed: () {
-              
-            },
-          )
-        ],
+        IconButton(
+          icon: Icon(
+            Icons.refresh,
+            color: Colors.white,
+          ),
+          onPressed: () async {
+             List<HorarioMarcado> _horariosMarcados =
+                await HorarioMarcadoApi.findHorarioMarcadoByUser(user);
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => new HomePage(
+                    horariosMarcados: _horariosMarcados,
+                    user: user,
+                    mensagem: "",
+                    open: true,
+                    sucesso: true,
+                  )));
+          },
+        )
+      ],
       elevation: defaultTargetPlatform == TargetPlatform.android ? 5.0 : 0.0,
     ),
     drawer: new Drawer(
@@ -183,30 +196,106 @@ Widget _buildHomePageCliente(
       ),
     ),
     body: new Container(
-      child: Wrap(
+      margin: EdgeInsets.all(7),
+      child: ListView(
         children: <Widget>[
-          Center(
-            child: Text("Horários Marcados"),
-          ),
-          for (HorarioMarcado horarioMarcado in horariosMarcados)
-            GestureDetector(
-              child: Card(
-                child: Wrap(
-                  children: <Widget>[
-                    Text(
-                      "Dia ",
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(dateFormatApenasDia.format(horarioMarcado.dia) +
-                        " as " +
-                        dateFormat.format(horarioMarcado.horario.hora)),
-                  ],
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Divider(thickness: 1, color: Colors.black),
+              Center(
+                child: Text(
+                  "Horários Marcados a partir de hoje",
+                  style: TextStyle(
+                    fontSize: 23,
+                  ),
                 ),
               ),
-            )
+              Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+              if (horariosMarcados.length == 0)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text("Você ainda não possui horários marcados",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,
+                        )),
+                  ],
+                ),
+              for (HorarioMarcado horarioMarcado in horariosMarcados)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                new HorarioMarcadoPage(
+                                  horarioMarcado: horarioMarcado,
+                                  loggedUser: user,
+                                )));
+                  },
+                  child: Card(
+                    child: Column(
+                      children: <Widget>[
+                        Wrap(
+                          children: <Widget>[
+                            Text("Em " +
+                                horarioMarcado.barbearia.nome +
+                                " com " +
+                                horarioMarcado.barbeiro.nome),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 17, 0, 17),
+                            ),
+                            Text(
+                              "Dia ",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(dateFormatApenasDia
+                                    .format(horarioMarcado.dia) +
+                                " as " +
+                                dateFormat.format(horarioMarcado.horario.hora)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ButtonTheme(
+                child: RaisedButton(
+                    textColor: Colors.white,
+                    child: Text("Ver a listagem de barbearias"),
+                    onPressed: () async {
+                      Future<List<Barbearia>> fBarbearias = _listaBarbearias();
+                      List<Barbearia> barbearias = await fBarbearias;
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(new MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                new ListagemBarbearia(
+                                  loggedUser: user,
+                                  barbearias: barbearias,
+                                )));
+                    }),
+              )
+            ],
+          ),
         ],
       ),
     ),
+    floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.search),
+      onPressed: () {
+        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new PesquisaBarbearias(loggedUser: user,)));
+      },
+      ),
   );
 }
 
@@ -219,10 +308,21 @@ Widget _buildHomePageBarbearia(
       title: new Text("Olá, " + user.barbeiro.nome),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.refresh, color: Colors.white,),
+          icon: Icon(
+            Icons.refresh,
+            color: Colors.white,
+          ),
           onPressed: () async {
-            List<HorarioMarcado> _horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(user);
-            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => new HomePage(horariosMarcados: _horariosMarcados, user: user, mensagem: "", open: true, sucesso: true,)));
+            List<HorarioMarcado> _horariosMarcados =
+                await HorarioMarcadoApi.findHorarioMarcadoByUser(user);
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => new HomePage(
+                      horariosMarcados: _horariosMarcados,
+                      user: user,
+                      mensagem: "",
+                      open: true,
+                      sucesso: true,
+                    )));
           },
         )
       ],
@@ -238,15 +338,6 @@ Widget _buildHomePageBarbearia(
               backgroundColor: Colors.black38,
               child: new Text(user.barbeiro.nome.substring(0, 1)),
             ),
-          ),
-          new ListTile(
-            title: new Text("Eu"),
-            trailing: new Icon(Icons.arrow_back),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new FutureTest()));
-            },
           ),
           new ListTile(
             title: new Text("Minha Barbearia"),
@@ -330,6 +421,7 @@ Widget _buildHomePageBarbearia(
       ),
     ),
     body: new Container(
+      margin: EdgeInsets.all(7.0),
       child: ListView(
         children: <Widget>[
           Column(
@@ -337,13 +429,19 @@ Widget _buildHomePageBarbearia(
             children: <Widget>[
               Divider(thickness: 1, color: Colors.black),
               Center(
-                child: Text("Horários Marcados a partir de hoje", style: 
-                TextStyle(
-                  fontSize: 23,
-
-                ),),
+                child: Text(
+                  "Horários Marcados a partir de hoje",
+                  style: TextStyle(
+                    fontSize: 23,
+                  ),
+                ),
               ),
-              Divider(thickness: 1, color: Colors.black,),
+              Divider(
+                thickness: 1,
+                color: Colors.black,
+              ),
+              if (horariosMarcados.length == 0)
+                Text("Você ainda não possui horários marcados"),
               for (HorarioMarcado horarioMarcado in horariosMarcados)
                 GestureDetector(
                   onTap: () {
@@ -362,7 +460,9 @@ Widget _buildHomePageBarbearia(
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            horarioMarcado.cliente != null ? Text(horarioMarcado.cliente.nome) : Text(horarioMarcado.clienteNome),
+                            horarioMarcado.cliente != null
+                                ? Text(horarioMarcado.cliente.nome)
+                                : Text(horarioMarcado.clienteNome),
                           ],
                         ),
                         Row(
