@@ -1,33 +1,30 @@
-import 'package:appbarbearia_flutter/api/BarbeiroApi.dart';
+import 'package:appbarbearia_flutter/api/ClienteApi.dart';
 import 'package:appbarbearia_flutter/api/HorarioMarcadoApi.dart';
-import 'package:appbarbearia_flutter/main.dart';
-import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Cliente.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
-import 'package:appbarbearia_flutter/model/UserBarbeiroWrapper.dart';
-import 'package:appbarbearia_flutter/pages/loginPage.dart';
+import 'package:appbarbearia_flutter/model/UserClienteWrapper.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 
-import 'minhaBarbearia.dart';
+import '../main.dart';
+import 'loginPage.dart';
 
-class EditarBarbeiro extends StatefulWidget {
-  final Barbeiro barbeiro;
+class EditarCliente extends StatefulWidget{
+  final Cliente cliente;
   final User loggedUser;
 
-  const EditarBarbeiro({this.loggedUser, this.barbeiro});
+  const EditarCliente({this.loggedUser, this.cliente});
 
   @override
-  _EditarBarbeiroState createState() => _EditarBarbeiroState();
+  _EditarClienteState createState() => _EditarClienteState();
 }
 
-class _EditarBarbeiroState extends State<EditarBarbeiro> {
-  Barbeiro _barbeiro;
+class _EditarClienteState extends State<EditarCliente> {
+  Cliente _cliente;
   var _eNome;
   var _eCpf;
   var _eDataNascimento;
@@ -41,25 +38,26 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
 
   @override
   void initState() {
-    _barbeiro = widget.barbeiro;
+    _cliente = widget.cliente;
     DateFormat formataDataNascimento = new DateFormat("dd/MM/yyyy");
-    _eNome = TextEditingController(text: widget.barbeiro.nome);
+    _eNome = TextEditingController(text: widget.cliente.nome);
     _eCpf = new MaskedTextController(
-        mask: '000.000.000-00', text: widget.barbeiro.cpf);
+        mask: '000.000.000-00', text: widget.cliente.cpf);
     _eDataNascimento = new MaskedTextController(
-        mask: '00/00/0000', text: formataDataNascimento.format(widget.barbeiro.dataNascimento));
-    _eCidade = TextEditingController(text: widget.barbeiro.cidade);
-    _eLogradouro = TextEditingController(text: widget.barbeiro.endereco);
+        mask: '00/00/0000', text: formataDataNascimento.format(widget.cliente.dataNascimento));
+    _eCidade = TextEditingController(text: widget.cliente.cidade);
+    _eLogradouro = TextEditingController(text: widget.cliente.endereco);
     _eTelefone = MaskedTextController(
-        mask: '(00) 0000-0000', text: widget.barbeiro.telefone);
+        mask: '(00) 0000-0000', text: widget.cliente.telefone);
     _eCelular = MaskedTextController(
-        mask: '(00) 00000-0000', text: widget.barbeiro.celular);
-    _eEstado = widget.barbeiro.estado;
+        mask: '(00) 00000-0000', text: widget.cliente.celular);
+    _eEstado = widget.cliente.estado;
+    super.initState();
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       appBar: new AppBar(
         title: Text("Editando Usuario"),
@@ -67,11 +65,11 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
       body: Container(
         child: Form(
           key: _formKey,
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(15.0),
-          children: <Widget>[
-            TextFormField(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(15.0),
+            children: <Widget>[
+               TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),
                 hasFloatingPlaceholder: true,
@@ -85,7 +83,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                 return null;
               },
               onChanged: (nome){
-                _barbeiro.nome=nome;
+                _cliente.nome=nome;
               },
             ),
             TextFormField(
@@ -103,7 +101,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                 return null;
               },
               onChanged: (cpf){
-                _barbeiro.cpf=cpf;
+                _cliente.cpf=cpf;
               },
             ),
             DateTimePickerFormField(
@@ -126,7 +124,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                     return null;
                   },
                   onChanged: (dt) {
-                    _barbeiro.dataNascimento=dt;
+                    _cliente.dataNascimento=dt;
                     Text(DateFormat("dd-MM-yyyy").format(dt));
                   }
                 ),
@@ -149,7 +147,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                   },
                   controller: _eCidade,
                   onChanged: (cidade){
-                    _barbeiro.cidade=cidade;
+                    _cliente.cidade=cidade;
                   },
                 ),
                 TextFormField(
@@ -166,7 +164,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                     return null;
                   },
                   onChanged: (endereco){
-                    _barbeiro.endereco=endereco;
+                    _cliente.endereco=endereco;
                   },
                 ),
                 Divider(),
@@ -189,7 +187,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                   },
                   controller: _eTelefone,
                   onChanged: (telefone){
-                    _barbeiro.telefone=telefone;
+                    _cliente.telefone=telefone;
                   },
                 ),
                 TextFormField(
@@ -201,7 +199,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                   keyboardType: TextInputType.number,
                   controller: _eCelular,
                   onChanged: (celular){
-                    _barbeiro.celular=celular;
+                    _cliente.celular=celular;
                   },
                 ),
                   Row(
@@ -214,7 +212,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                       value: _eEstado,
                       onChanged: (Estados newValue) {
                         setState(() {
-                          _barbeiro.estado=newValue;
+                          _cliente.estado=newValue;
                           _eEstado = newValue;
                         });
                       },
@@ -223,11 +221,11 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                         value: _estado,
                         child: new Text(_estado.toString().replaceAll("Estados.", "")));
                     }).toList()
-                    )
-                ],
-              ),
-                 Row(
-                    children: <Widget>[
+                    )  
+                  ],
+              ),          
+              Row(
+                children: <Widget>[
                       Expanded(
                     child: ButtonTheme(
                       minWidth: double.infinity,
@@ -236,8 +234,8 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                         key: Key("_submitButton"),
                         onPressed: () async{
                           if (_formKey.currentState.validate()) {
-                            Future<Barbeiro> fBarbeiro = _saveBarbeiro(widget.loggedUser, _barbeiro);
-                            Barbeiro responseBarbeiro = await fBarbeiro;
+                            Future<Cliente> fCliente = _saveCliente(widget.loggedUser, _cliente);
+                            Cliente responseBarbeiro = await fCliente;
                             if(responseBarbeiro.id != null){
                               List<HorarioMarcado> horariosMarcados = await HorarioMarcadoApi.findHorarioMarcadoByUser(widget.loggedUser);
                               Navigator.push(
@@ -249,25 +247,26 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                         },
                         elevation: 3.0,
                         //color: Colors.purple,
-                        textColor: Colors.white,
-                        ),
-                      ),
-                  ),
-                ],
-              ),
-          ],
+                        textColor: Colors.white,      
+                      )
+                    )
+                  )
+            ],
+          ),
+            ]
+        ),
       ),
-    )
-    )
-    );
+    ));    
+  }
+  Future<Cliente> _saveCliente(User user, Cliente cliente) async {
+    UserClienteWrapper clienteWrapper = new UserClienteWrapper();
+    clienteWrapper.cliente = cliente;
+    clienteWrapper.user = user;
+    Future<Cliente> fCliente = ClienteApi.saveCliente(clienteWrapper);
+    Cliente responseCliente = await fCliente;
+    return responseCliente;
   }
 }
 
-Future<Barbeiro> _saveBarbeiro(User user, Barbeiro barbeiro) async {
-  UserBarbeiroWrapper barbeiroWrapper = new UserBarbeiroWrapper();
-  barbeiroWrapper.barbeiro = barbeiro;
-  barbeiroWrapper.user = user;
-  Future<Barbeiro> fBarbeiro = BarbeiroApi.saveBarbeiro(barbeiroWrapper);
-  Barbeiro responseBarbeiro = await fBarbeiro;
-  return responseBarbeiro;
+class _user {
 }

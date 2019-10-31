@@ -9,6 +9,7 @@ import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
 import 'package:appbarbearia_flutter/pages/editarBarbeiro.dart';
+import 'package:appbarbearia_flutter/pages/editarCliente.dart';
 import 'package:appbarbearia_flutter/pages/form_marcarHorario.dart';
 import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
 import 'package:appbarbearia_flutter/pages/listagemBarbearia.dart';
@@ -141,25 +142,7 @@ Widget _buildHomePageCliente(
               backgroundColor: Colors.black38,
               child: new Text(user.cliente.nome.substring(0, 1)),
             ),
-          ),
-          new ListTile(
-            title: new Text("Eu"),
-            trailing: new Icon(Icons.arrow_back),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new FutureTest()));
-            },
-          ),
-          new ListTile(
-            title: new Text("Não"),
-            trailing: new Icon(Icons.add_shopping_cart),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new HorarioMarcadoForm()));
-            },
-          ),
+          ),          
           new ListTile(
             title: new Text("Listagem barberias"),
             trailing: new Icon(Icons.accessibility),
@@ -179,18 +162,17 @@ Widget _buildHomePageCliente(
               Navigator.of(context).push(new MaterialPageRoute(
                   builder: (BuildContext context) => new CadastroCliente()));
             },
-          ),
+          ),          
+          new Divider(),
           new ListTile(
             title: new Text("Editar meu perfil"),
             trailing: new Icon(Icons.accessibility),
-            onTap: () {
+             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new CadastroCliente()));
+                  builder: (BuildContext context) => new EditarCliente(cliente: user.cliente, loggedUser: user,)));
             },
-          ),
-          new Divider(),
-          new ListTile(
+          ),new ListTile(
             title: new Text("Logout"),
             trailing: new Icon(Icons.close),
             onTap: () {
@@ -415,6 +397,15 @@ Widget _buildHomePageBarbearia(
             },
           ),
           new Divider(),
+           new ListTile(
+            title: new Text("Editar meu perfil"),
+            trailing: new Icon(Icons.accessibility),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(new MaterialPageRoute(
+                  builder: (BuildContext context) => new EditarBarbeiro(barbeiro: user.barbeiro, loggedUser: user,)));
+            },
+          ),
           new ListTile(
             title: new Text("Logout"),
             trailing: new Icon(Icons.close),
@@ -427,15 +418,7 @@ Widget _buildHomePageBarbearia(
                       )));
             },
           ),
-          new ListTile(
-            title: new Text("Editar meu perfil"),
-            trailing: new Icon(Icons.accessibility),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new EditarBarbeiro(barbeiro: user.barbeiro, loggedUser: user,)));
-            },
-          ),
+         
         ],
       ),
     ),
