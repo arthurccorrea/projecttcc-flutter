@@ -124,7 +124,6 @@ class _EditarServicoState extends State<EditarServico> {
                           }
                         },
                         elevation: 3.0,
-                        color: Colors.purple,
                         textColor: Colors.white,
                       ),
                     ),

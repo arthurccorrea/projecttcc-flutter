@@ -18,6 +18,7 @@ class HorarioMarcado {
 	Cliente cliente;
   Servico servico;
   String clienteNome;
+  Barbeiro barbeiroComoCliente;
   bool cancelado;
 	DateTime dia;
 	DateTime cadastro;

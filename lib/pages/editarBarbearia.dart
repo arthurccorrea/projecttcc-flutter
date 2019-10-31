@@ -28,10 +28,10 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
   var _eCidade;
   var _eEndereco;
   var _eEstado;
-  var _ehoraAbertura;
-  var _eminutoAbertura;
-  var _ehoraFechamento;
-  var _eminutoFechamento;
+  var _eHoraAbertura;
+  var _eMinutoAbertura;
+  var _eHoraFechamento;
+  var _eMinutoFechamento;
   List<int> _eHoras = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
   List<int> _eMinutos = [0,15,30,45];
   DateFormat formatHora = new DateFormat("hh:mm");
@@ -46,11 +46,16 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
     _eDescricao = TextEditingController(text: widget.barbearia.descricao);
     _eCidade = TextEditingController(text: widget.barbearia.cidade);
     _eEstado = widget.barbearia.estado;
-    _eEndereco = TextEditingController(text: widget.barbearia.descricao);
-    _ehoraAbertura = int.parse(getHora.format(widget.barbearia.horarioAbertura));
-    _eminutoAbertura = int.parse(getMinutos.format(widget.barbearia.horarioAbertura));
-    _ehoraFechamento = int.parse(getHora.format(widget.barbearia.horarioFechamento));
-    _eminutoFechamento = int.parse(getMinutos.format(widget.barbearia.horarioFechamento));
+    _eEndereco = TextEditingController(text: widget.barbearia.endereco);
+    _eHoraAbertura = int.parse(getHora.format(widget.barbearia.horarioAbertura));
+    _eMinutoAbertura = int.parse(getMinutos.format(widget.barbearia.horarioAbertura));
+    _eHoraFechamento = int.parse(getHora.format(widget.barbearia.horarioFechamento));
+    _eMinutoFechamento = int.parse(getMinutos.format(widget.barbearia.horarioFechamento));
+    _barbearia.horaAbertura =  _eHoraAbertura;
+    _barbearia.minutoAbertura = _eMinutoAbertura;
+    _barbearia.horaFechamento =_eHoraFechamento;
+    _barbearia.minutoFechamento = _eMinutoFechamento;
+    
     super.initState();
   }
 
@@ -174,10 +179,10 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                     ),
                     Expanded(
                       child: new DropdownButton<int>(
-                        value: _ehoraAbertura,
+                        value: _eHoraAbertura,
                         onChanged: (int newValue){
                           setState(() {
-                           _ehoraAbertura = newValue;
+                           _eHoraAbertura = newValue;
                            _barbearia.horaAbertura = newValue; 
                           });
                         },
@@ -189,10 +194,10 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                       )
                     ),
                     Expanded(child: new DropdownButton<int>(
-                        value: _eminutoAbertura,
+                        value: _eMinutoAbertura,
                         onChanged: (int newValue){
                           setState((){
-                            _eminutoAbertura = newValue;
+                            _eMinutoAbertura = newValue;
                             _barbearia.minutoAbertura = newValue;
                           });
                         },
@@ -211,10 +216,10 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                     ),
                     Expanded(
                       child: new DropdownButton<int>(
-                        value: _ehoraFechamento,
+                        value: _eHoraFechamento,
                         onChanged: (int newValue){
                           setState((){
-                            _ehoraFechamento = newValue;
+                            _eHoraFechamento = newValue;
                             _barbearia.horaFechamento = newValue;
                           });
                         },
@@ -226,10 +231,10 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                         )
                       ),
                       Expanded(child: new DropdownButton<int>(
-                        value: _eminutoFechamento,
+                        value: _eMinutoFechamento,
                         onChanged: (int newValue){
                           setState((){
-                            _eminutoFechamento = newValue;
+                            _eMinutoFechamento = newValue;
                             _barbearia.minutoFechamento = newValue;
                           });
                         },
@@ -263,6 +268,7 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                                           loggedUser: widget.loggedUser,
                                           sucesso: true,
                                           open: false,
+                                          barbeiro: widget.loggedUser.barbeiro,
                                           mensagem:
                                               "Barbaria alterado com sucesso!",
                                         )));

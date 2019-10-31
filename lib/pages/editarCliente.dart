@@ -11,7 +11,6 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 
 import '../main.dart';
-import 'loginPage.dart';
 
 class EditarCliente extends StatefulWidget{
   final Cliente cliente;
@@ -266,7 +265,4 @@ class _EditarClienteState extends State<EditarCliente> {
     Cliente responseCliente = await fCliente;
     return responseCliente;
   }
-}
-
-class _user {
 }

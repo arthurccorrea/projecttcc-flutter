@@ -233,7 +233,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                           Barbearia responseBarbearia =  await _saveBarbearia(barbearia, widget.loggedUser);
                           if(responseBarbearia.id != null){
                           responseBarbearia.servicos = new List<Servico>();
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new PaginaBarbearia(barbearia: responseBarbearia, open: false, sucesso: true, mensagem: "Cadastro Efetuado com sucesso")));
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new PaginaBarbearia(barbearia: responseBarbearia, loggedUser: widget.loggedUser, open: false, sucesso: true, mensagem: "Cadastro Efetuado com sucesso")));
                           } else {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new CadastroBarbearia(sucesso: false, open: false, mensagem: "Ops, algo deu errado, por favor, faça seu cadastro novamente",loggedUser: widget.loggedUser,)));
                           }

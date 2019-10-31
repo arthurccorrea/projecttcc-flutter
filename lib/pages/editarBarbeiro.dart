@@ -2,19 +2,16 @@ import 'package:appbarbearia_flutter/api/BarbeiroApi.dart';
 import 'package:appbarbearia_flutter/api/HorarioMarcadoApi.dart';
 import 'package:appbarbearia_flutter/main.dart';
 import 'package:appbarbearia_flutter/model/Barbeiro.dart';
-import 'package:appbarbearia_flutter/model/Cliente.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/model/UserBarbeiroWrapper.dart';
-import 'package:appbarbearia_flutter/pages/loginPage.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 
-import 'minhaBarbearia.dart';
 
 class EditarBarbeiro extends StatefulWidget {
   final Barbeiro barbeiro;

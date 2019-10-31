@@ -10,12 +10,10 @@ import 'package:appbarbearia_flutter/pages/cadastroBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
 import 'package:appbarbearia_flutter/pages/editarBarbeiro.dart';
 import 'package:appbarbearia_flutter/pages/editarCliente.dart';
-import 'package:appbarbearia_flutter/pages/form_marcarHorario.dart';
 import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
 import 'package:appbarbearia_flutter/pages/listagemBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/loginPage.dart';
 import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
-import 'package:appbarbearia_flutter/pages/pagina_teste.dart';
 import 'package:appbarbearia_flutter/pages/pesquisasBarbearias.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -146,23 +144,16 @@ Widget _buildHomePageCliente(
           new ListTile(
             title: new Text("Listagem barberias"),
             trailing: new Icon(Icons.accessibility),
-            onTap: () {
+            onTap: () async {
+              List<Barbearia> barbearias = await BarbeariaApi.findAllByUser(user);
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
                   builder: (BuildContext context) => new ListagemBarbearia(
+                        barbearias: barbearias,
                         loggedUser: user,
                       )));
             },
           ),
-          new ListTile(
-            title: new Text("Cadastro de cliente"),
-            trailing: new Icon(Icons.accessibility),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new CadastroCliente()));
-            },
-          ),          
           new Divider(),
           new ListTile(
             title: new Text("Editar meu perfil"),
@@ -268,7 +259,6 @@ Widget _buildHomePageCliente(
                     onPressed: () async {
                       Future<List<Barbearia>> fBarbearias = _listaBarbearias(user);
                       List<Barbearia> barbearias = await fBarbearias;
-                        Navigator.of(context).pop();
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 new ListagemBarbearia(
@@ -509,6 +499,11 @@ Widget _buildHomePageBarbearia(
         ],
       ),
     ),
+    floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.search),
+      onPressed: () {
+        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new PesquisaBarbearias(loggedUser: user,)));
+      },),
   );
 }
 

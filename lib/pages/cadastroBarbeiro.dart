@@ -1,5 +1,4 @@
 import 'package:appbarbearia_flutter/api/BarbeiroApi.dart';
-import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Cliente.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';

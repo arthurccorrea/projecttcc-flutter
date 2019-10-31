@@ -90,39 +90,29 @@ class _MeusServicos extends StatefulWidget {
 }
 
 class _MeusServicosState extends State<_MeusServicos> {
-  @override
+   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(
-        children: <Widget>[
-          if(widget.barbearia.servicos == null) Text(
-                "Esta barbearia ainda não possui servicos disponiveis!",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.redAccent),
-              ),
-          for (Servico servico in widget.barbearia.servicos)
-            GestureDetector(
-              child: new Card(
-                child: Column(
-                  children: <Widget>[
-                    Text(servico.descricao,
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    Text(
-                      "Preço = R\$" + servico.preco.toString(),
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-                  ],
-                ),
-              ),
-              onTap: () {},
+      child: ListView.builder(
+      itemCount: widget.barbearia.servicos.length,
+      itemBuilder: (context, i) {
+        return GestureDetector(
+          child: new Card(
+            child: Column(
+              children: <Widget>[
+                Text(widget.barbearia.servicos[i].descricao,
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                Text("Preço: R\$" +widget.barbearia.servicos[i].preco.toString(), style: TextStyle(fontSize: 20),),
+                Padding (padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
+              ],
             ),
-        ],
-      ),
-    );
+          ),
+          onTap: () {
+          },
+        );
+      },
+    ));
   }
 }
 
@@ -151,6 +141,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(12),
         child: ListView(
       //  MainAxisSize.min,
       children: <Widget>[
@@ -175,7 +166,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
             ),
             Text(
               " " + widget.barbearia.endereco + ", " + widget.barbearia.cidade,
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20,), textAlign: TextAlign.center,
             ),
           ],
         ),
@@ -213,6 +204,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
                 child: RaisedButton(
                   child: Text("Marcar horário"),
                   elevation: 5.0,
+                  textColor: Colors.white,
                   onPressed: () {
                     Navigator.pushReplacement(
                         context,

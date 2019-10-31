@@ -35,9 +35,14 @@ class _MarcarHorarioState extends State<MarcarHorario> {
    @override
   void initState() {
     _servico = widget.barbearia.servicos[0];
+    if(widget.loggedUser.barbeiro != null && !widget.minhaBarbearia) {
+    _horarioMarcado.barbeiroComoCliente = widget.loggedUser.barbeiro;
+    } else {
+      _horarioMarcado.cliente = widget.cliente;
+    }
+    _horarioMarcado.barbeiro = widget.barbeiro;
     _horarioMarcado.dia = widget.data;
     _horarioMarcado.barbeiro = widget.barbeiro;
-    _horarioMarcado.cliente = widget.cliente;
     _horarioMarcado.horario = widget.horario;
     _horarioMarcado.servico = _servico;
     _horarioMarcado.dia = widget.data;

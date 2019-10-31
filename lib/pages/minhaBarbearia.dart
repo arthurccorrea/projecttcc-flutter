@@ -9,6 +9,7 @@ import 'package:appbarbearia_flutter/pages/editarServico.dart';
 import 'package:appbarbearia_flutter/pages/horariosBarbearia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'editarBarbearia.dart';
@@ -113,7 +114,7 @@ class _MeusServicosState extends State<_MeusServicos> {
                 Text(widget.barbearia.servicos[i].descricao,
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Text("Preço = R\$" +widget.barbearia.servicos[i].preco.toString(), style: TextStyle(fontSize: 20),),
+                Text("Preço: R\$" +widget.barbearia.servicos[i].preco.toString(), style: TextStyle(fontSize: 20),),
                 Padding (padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
               ],
             ),
@@ -224,6 +225,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        margin: EdgeInsets.all(15),
         child: Form(
           key: _formKey,
         child: ListView(
@@ -238,7 +240,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
                 return null;
               },
               decoration: const InputDecoration(
-                icon: Icon(Icons.mail),
+                icon: Icon(Icons.content_paste),
                 hasFloatingPlaceholder: true,
                 hintText: "Descrição (*)",
               ),
@@ -261,7 +263,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
               ],
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
-                icon: Icon(Icons.mail),
+                icon: Icon(FontAwesomeIcons.moneyBill),
                 hasFloatingPlaceholder: true,
                 hintText: "Valor (*)",
               ),
