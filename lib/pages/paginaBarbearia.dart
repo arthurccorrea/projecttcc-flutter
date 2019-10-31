@@ -1,5 +1,6 @@
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Horario.dart';
+import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/horariosBarbearia.dart';
 import 'package:flutter/cupertino.dart';
@@ -119,13 +120,15 @@ class _DescricaoBarbearia extends StatefulWidget {
   final bool sucesso;
   final User loggedUser;
   final String mensagem;
+  final List<Servico> servicos;
 
   const _DescricaoBarbearia(
       {this.barbearia,
       this.loggedUser,
       this.open,
       this.sucesso,
-      this.mensagem});
+      this.mensagem, 
+      this.servicos});
 
   @override
   _DescricaoBarbeariaState createState() => _DescricaoBarbeariaState();
@@ -152,7 +155,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
           textAlign: TextAlign.center,
         ),
         Text(""),
-        Row(
+        Wrap(
           children: <Widget>[
             Text(
               "Local :",
@@ -165,7 +168,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
           ],
         ),
         Text(""),
-        Row(
+        Wrap(
           children: <Widget>[
             Text(
               "Horário de abertura :",
@@ -181,7 +184,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
           ],
         ),
         Text(""),
-        Row(
+        Wrap(
           children: <Widget>[
             Text(
               "Horário de fechamento :",
@@ -192,7 +195,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
           ],
         ),
         Text(""),
-        ButtonTheme(
+         widget.barbearia.servicos.length > 0 ? ButtonTheme(
           minWidth: double.infinity,
           child: RaisedButton(
             child: Text("Marcar horário"),
@@ -210,7 +213,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
                           )));
             },
           ),
-        ),
+        ) : Text("Esta barbearia ainda não possui servicos disponiveis!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.redAccent),),
         !widget.open && widget.sucesso
             ? Text(widget.mensagem,
                 style: TextStyle(

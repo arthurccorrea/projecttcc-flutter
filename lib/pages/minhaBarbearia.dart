@@ -154,21 +154,21 @@ DateFormat dateFormat = DateFormat("HH:mm");
         Text(""),
         Text(" " + widget.barbearia.descricao,style: TextStyle(fontSize: 25), textAlign: TextAlign.center, ),       
         Text(""),
-        Row(
+        Wrap(
           children: <Widget>[
             Text("Local :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
             Text(" " + widget.barbearia.endereco + ", " + widget.barbearia.cidade, style: TextStyle(fontSize: 20),),
           ],
         ),
         Text(""),
-        Row(
+        Wrap(
           children: <Widget>[
             Text("Horário de abertura :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
             Text(" " + dateFormat.format( widget.barbearia.horarioAbertura,), style: TextStyle(fontSize: 20),),
         ],
         ),
         Text(""),
-        Row(
+        Wrap(
           children: <Widget>[
             Text("Horário de fechamento :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
             Text(" " + dateFormat.format( widget.barbearia.horarioFechamento), style: TextStyle(fontSize: 20)),

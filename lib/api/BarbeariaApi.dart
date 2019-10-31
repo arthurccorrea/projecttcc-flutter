@@ -86,6 +86,25 @@ class BarbeariaApi {
     return barbearias;
   }
 
+  static Future<List<Barbearia>> findAllByUser(User user
+  ) async{
+    Map<String, String> headers = new Map<String, String>();
+    headers["Content-Type"] = "application/json";
+    String token = await authService.obterToken();
+    headers["Authorization"] = "Bearer $token";
+    String url = baseUrl + "/nearUser/" + user.id;
+    Future<http.Response> fResponse = http.get(url, headers: headers);
+    http.Response response = await fResponse;
+    List<Barbearia> barbearias = new List<Barbearia>();
+    await fResponse.whenComplete( () {
+      var responseList = json.decode(response.body) as List;
+      barbearias = responseList.map((i)=>Barbearia.fromJson(i)).toList();
+    });
+
+    return barbearias;
+  }
+
+
   static Future<List<Barbearia>> findByNome(String nome) async {
     Map<String, String> headers = new Map<String, String>();
     headers["Content-Type"] = "application/json";

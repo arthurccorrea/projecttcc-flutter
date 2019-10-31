@@ -7,7 +7,6 @@ import 'package:appbarbearia_flutter/model/Horario.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
-import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

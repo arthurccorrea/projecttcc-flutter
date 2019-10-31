@@ -274,7 +274,7 @@ Widget _buildHomePageCliente(
                     textColor: Colors.white,
                     child: Text("Ver a listagem de barbearias"),
                     onPressed: () async {
-                      Future<List<Barbearia>> fBarbearias = _listaBarbearias();
+                      Future<List<Barbearia>> fBarbearias = _listaBarbearias(user);
                       List<Barbearia> barbearias = await fBarbearias;
                         Navigator.of(context).pop();
                         Navigator.of(context).push(new MaterialPageRoute(
@@ -370,7 +370,7 @@ Widget _buildHomePageBarbearia(
             title: new Text("Listagem barberias"),
             trailing: new Icon(Icons.accessibility),
             onTap: () async {
-              Future<List<Barbearia>> fBarbearias = _listaBarbearias();
+              Future<List<Barbearia>> fBarbearias = _listaBarbearias(user);
               List<Barbearia> barbearias = await fBarbearias;
               await fBarbearias.whenComplete(() {
                 Navigator.of(context).pop();
@@ -490,10 +490,9 @@ Widget _buildHomePageBarbearia(
                     textColor: Colors.white,
                     child: Text("Ver a listagem de barbearias"),
                     onPressed: () async {
-                      Future<List<Barbearia>> fBarbearias = _listaBarbearias();
+                      Future<List<Barbearia>> fBarbearias = _listaBarbearias(user);
                       List<Barbearia> barbearias = await fBarbearias;
                       await fBarbearias.whenComplete(() {
-                        Navigator.of(context).pop();
                         Navigator.of(context).push(new MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 new ListagemBarbearia(
@@ -511,8 +510,8 @@ Widget _buildHomePageBarbearia(
   );
 }
 
-Future<List<Barbearia>> _listaBarbearias() async {
-  Future<List<Barbearia>> fBarbearias = BarbeariaApi.findAll();
+Future<List<Barbearia>> _listaBarbearias(User user) async {
+  Future<List<Barbearia>> fBarbearias = BarbeariaApi.findAllByUser(user);
   List<Barbearia> barbearias = await fBarbearias;
 
   return barbearias;

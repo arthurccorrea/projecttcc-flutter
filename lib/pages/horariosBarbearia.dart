@@ -123,7 +123,7 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
                             horario: horario,
                             data: widget.data,
                             minhaBarbearia: widget.minhaBarbearia,
-                            cliente: widget.minhaBarbearia ? null : widget.loggedUser.cliente,
+                            cliente: widget.loggedUser.cliente == null ? null : widget.loggedUser.cliente,
                             barbeiro: _barbeiro,
                             loggedUser: widget.loggedUser,
                           )));
