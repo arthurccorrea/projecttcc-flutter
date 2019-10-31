@@ -19,6 +19,7 @@ class Barbearia {
   int minutoAbertura;
   int horaFechamento;
   int minutoFechamento;
+  String foto;
   DateTime horarioAbertura;
   DateTime horarioFechamento;
   DateTime cadastro;
