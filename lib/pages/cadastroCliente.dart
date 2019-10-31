@@ -265,7 +265,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                           }
                         },
                         elevation: 3.0,
-                        color: Colors.purple,
+                        //color: Colors.purple,
                         textColor: Colors.white,
                       ),
                     ),
