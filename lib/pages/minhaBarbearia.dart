@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import 'editarBarbearia.dart';
+
 class MinhaBarbearia extends StatefulWidget {
   final Barbearia barbearia;
   final Barbeiro barbeiro;
@@ -143,6 +145,7 @@ DateFormat dateFormat = DateFormat("HH:mm");
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.all(7.0),
         child: ListView(
         //  MainAxisSize.min,
       children: <Widget>[
@@ -183,6 +186,17 @@ DateFormat dateFormat = DateFormat("HH:mm");
           textColor: Colors.white,     
         ),
         ),
+        ButtonTheme(
+          minWidth: double.infinity,
+          child: RaisedButton(
+          child: Text("Editar Barbearia"),
+          elevation: 5.0,
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new EditarBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser,)));
+          },     
+          textColor: Colors.white,     
+        ),
+        ),  
         !widget.open && widget.sucesso ? Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.green)) : Text(widget.mensagem, style: TextStyle(color: Colors.white, backgroundColor: Colors.red),),
       ],
     ));
