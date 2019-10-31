@@ -6,6 +6,7 @@ import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/paginaBarbearia.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CadastroBarbearia extends StatefulWidget {
   final bool sucesso;
@@ -105,7 +106,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.location_city),
+                    icon: Icon(FontAwesomeIcons.home),
                     hasFloatingPlaceholder: true,
                     hintText: "Logradouro"
                   ),

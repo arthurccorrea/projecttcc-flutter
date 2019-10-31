@@ -132,7 +132,7 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                   }
                 },
                 elevation: 3.0,
-                color: Colors.purple,
+                //color: Colors.purple,
                 textColor: Colors.white,
               ),
             ),

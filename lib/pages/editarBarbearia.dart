@@ -6,7 +6,7 @@ import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'minhaBarbearia.dart';
 
 class EditarBarbearia extends StatefulWidget {
@@ -130,7 +130,7 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
             ),
             TextFormField(
               decoration: const InputDecoration(
-                    icon: Icon(Icons.location_city),
+                    icon: Icon(FontAwesomeIcons.home),
                     hasFloatingPlaceholder: true,
                     hintText: "Logradouro"
                   ),
@@ -287,7 +287,7 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                           }
                         },
                         elevation: 3.0,
-                        color: Colors.purple,
+                        //color: Colors.purple,
                         textColor: Colors.white,
                       ),
                     ),

@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:appbarbearia_flutter/api/AuthApiService.dart';
 import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/api/HorarioMarcadoApi.dart';
@@ -323,7 +323,7 @@ Widget _buildHomePageBarbearia(
           ),
           new ListTile(
             title: new Text("Minha Barbearia"),
-            trailing: new Icon(Icons.add),
+            trailing: new Icon(FontAwesomeIcons.user),
             onTap: () async {
               Navigator.of(context).pop();
               Future<List<Barbearia>> fBarbearias =
@@ -350,7 +350,7 @@ Widget _buildHomePageBarbearia(
           ),
           new ListTile(
             title: new Text("Listagem barberias"),
-            trailing: new Icon(Icons.accessibility),
+            trailing: new Icon(FontAwesomeIcons.list),
             onTap: () async {
               Future<List<Barbearia>> fBarbearias = _listaBarbearias(user);
               List<Barbearia> barbearias = await fBarbearias;
@@ -366,7 +366,7 @@ Widget _buildHomePageBarbearia(
           ),
           new ListTile(
             title: new Text("Cadastro de cliente"),
-            trailing: new Icon(Icons.accessibility),
+            trailing: new Icon(FontAwesomeIcons.userPlus),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
@@ -375,7 +375,7 @@ Widget _buildHomePageBarbearia(
           ),
           new ListTile(
             title: new Text("Cadastro de barbearia"),
-            trailing: new Icon(Icons.accessibility),
+            trailing: new Icon(FontAwesomeIcons.folderPlus),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
@@ -389,7 +389,7 @@ Widget _buildHomePageBarbearia(
           new Divider(),
            new ListTile(
             title: new Text("Editar meu perfil"),
-            trailing: new Icon(Icons.accessibility),
+            trailing: new Icon(FontAwesomeIcons.userEdit),
             onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
@@ -398,7 +398,7 @@ Widget _buildHomePageBarbearia(
           ),
           new ListTile(
             title: new Text("Logout"),
-            trailing: new Icon(Icons.close),
+            trailing: new Icon(FontAwesomeIcons.signOutAlt),
             onTap: () {
               authService.logout();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(

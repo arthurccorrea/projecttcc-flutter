@@ -6,6 +6,7 @@ import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class EditarServico extends StatefulWidget {
   final Barbearia barbearia;
@@ -52,7 +53,7 @@ class _EditarServicoState extends State<EditarServico> {
                   return null;
                 },
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.mail),
+                  icon: Icon(FontAwesomeIcons.fileAlt),
                   hasFloatingPlaceholder: true,
                   hintText: "Descrição (*)",
                 ),
@@ -74,7 +75,7 @@ class _EditarServicoState extends State<EditarServico> {
                 ],
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  icon: Icon(Icons.mail),
+                  icon: Icon(FontAwesomeIcons.moneyBill),
                   hasFloatingPlaceholder: true,
                   hintText: "Valor (*)",
                 ),
