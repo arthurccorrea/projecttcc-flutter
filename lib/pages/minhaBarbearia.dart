@@ -5,6 +5,7 @@ import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Horario.dart';
 import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
+import 'package:appbarbearia_flutter/pages/cadastroBarbeiroParaMinhaBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/editarServico.dart';
 import 'package:appbarbearia_flutter/pages/horariosBarbearia.dart';
 import 'package:flutter/material.dart';
@@ -86,6 +87,11 @@ class _MinhaBarbeariaState extends State<MinhaBarbearia> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.person_add),
+      onPressed: () {
+        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new CadastroBarbeiroParaMinhaBarbearia(barbearia: widget.barbearia, loggedUser: widget.loggedUser)));
+      },),
     );
   }
 }
@@ -300,7 +306,7 @@ class _CadastroServicoState extends State<_CadastroServico> {
           ],
       ),
     )
-    )
+    ),
     );
   }
 }

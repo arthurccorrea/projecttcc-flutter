@@ -18,6 +18,7 @@ Barbearia _$BarbeariaFromJson(Map<String, dynamic> json) {
     ..minutoAbertura = json['minutoAbertura'] as int
     ..horaFechamento = json['horaFechamento'] as int
     ..minutoFechamento = json['minutoFechamento'] as int
+    ..foto = json['foto'] as String
     ..horarioAbertura = json['horarioAbertura'] == null
         ? null
         : DateTime.parse(json['horarioAbertura'] as String)
@@ -55,6 +56,7 @@ Map<String, dynamic> _$BarbeariaToJson(Barbearia instance) => <String, dynamic>{
       'minutoAbertura': instance.minutoAbertura,
       'horaFechamento': instance.horaFechamento,
       'minutoFechamento': instance.minutoFechamento,
+      'foto': instance.foto,
       'horarioAbertura': instance.horarioAbertura?.toIso8601String(),
       'horarioFechamento': instance.horarioFechamento?.toIso8601String(),
       'cadastro': instance.cadastro?.toIso8601String(),
