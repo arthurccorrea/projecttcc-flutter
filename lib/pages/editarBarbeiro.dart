@@ -1,99 +1,73 @@
 import 'package:appbarbearia_flutter/api/BarbeiroApi.dart';
-import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Cliente.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/model/UserBarbeiroWrapper.dart';
-import 'package:appbarbearia_flutter/pages/loginPage.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
 
-class CadastroBarbeiro extends StatefulWidget {
+import 'minhaBarbearia.dart';
 
-  final sucesso;
+abstract class EditarBarbeiro extends StatefulWidget{
+  final Barbeiro barbeiro;
   final Cliente cliente;
+  final User loggedUser;
 
-  const CadastroBarbeiro({Key key, this.sucesso, this.cliente}): super(key: key);
-
+  const EditarBarbeiro({Key key, this.cliente, this.loggedUser, this.barbeiro}) : super(key: key);
+  
   @override
-  _CadastroBarbeiroState createState() => _CadastroBarbeiroState();
+  _EditarBarbeiroState createState() => _EditarBarbeiroState();  
 }
 
-class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
-  var _nome = TextEditingController();
-  var _cpf = new MaskedTextController(mask: '000.000.000-00');
-  // DateTime _dataNascimento;
-  DateFormat dateFormat = new DateFormat("yyyy-MM-dd");
-  var _dataNascimento = new MaskedTextController(mask: '00/00/0000');
-  var _cidade = TextEditingController();
-  var _logradouro = TextEditingController();
-  var _eUsername = TextEditingController();
-  var _ePassword = TextEditingController();
-  var _eTelefone = MaskedTextController(mask: '(00) 0000-0000');
-  var _eCelular = MaskedTextController(mask: '(00) 00000-0000');
-  Estados _estado = Estados.AC;
-  Barbeiro _barbeiro = new Barbeiro();
-  User _user = new User();
+class _EditarBarbeiroState extends State<EditarBarbeiro> {
+  Barbeiro _barbeiro;
+  var _eNome;
+  var _eCpf;
+  var _eDataNascimento;
+  var _eCidade;
+  var _eLogradouro;
+  var _eTelefone;
+  var _eCelular;
+  Estados _eEstado = Estados.AC;
   final _formKey = GlobalKey<FormState>();
+  DateFormat dateFormat = new DateFormat("yyyy-MM-dd");
+
+  @override
+  void initState() {
+    _eNome = TextEditingController(text: widget.cliente.nome);
+    _eCpf = new MaskedTextController(mask: '000.000.000-00', text: widget.cliente.cpf);
+    _eDataNascimento = new MaskedTextController(mask: '00/00/0000', text: widget.cliente.dataNascimento.toString());
+    _eCidade = TextEditingController(text: widget.cliente.cidade);
+    _eLogradouro = TextEditingController(text: widget.cliente.endereco);
+    _eTelefone = MaskedTextController(mask: '(00) 0000-0000', text: widget.cliente.telefone);
+    _eCelular = MaskedTextController(mask: '(00) 0000-0000', text: widget.cliente.celular);
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Cadastro de barbeiro")),
-      body: Container(
-        child: Form(
-          key: _formKey,
+    return Scaffold(appBar: new AppBar(
+      title: Text("Editando Usuario"),
+    ),
+    body: Container(
+      child: Form(
+        key: _formKey,
         child: ListView(
           shrinkWrap: true,
           padding: EdgeInsets.all(15.0),
           children: <Widget>[
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              autocorrect: false,
-              validator: (value) {
-                if(value.isEmpty){
-                  return 'Este campo é obrigatório';
-                }
-                return null;
-              },
-              decoration: const InputDecoration(
-                icon: Icon(Icons.mail),
-                hasFloatingPlaceholder: true,
-                hintText: "Digite seu email (*)",
-              ),
-              controller: _eUsername,
-              onChanged: (username) {
-                _user.username = username;
-              },
-            ),
-            TextFormField(
-              autocorrect: false,
-              obscureText: true,
-              decoration: const InputDecoration(
-                hintText: "Digite sua senha (*)",
-                icon: Icon(Icons.vpn_key),
-              ),
-              validator: (value) {
-                if(value.isEmpty){
-                  return 'Este campo é obrigatório';
-                }
-                return null;
-              },
-              controller: _ePassword,
-              onChanged: (password) {
-                _user.password = password;
-              },
-            ),
-            TextFormField(
+          TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),
                 hasFloatingPlaceholder: true,
                 hintText: "Insira o nome (*)"
               ),
-              controller: _nome,
+              controller: _eNome,
               validator: (value) {
                 if(value.isEmpty){
                   return 'Este campo é obrigatório';
@@ -101,16 +75,16 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                 return null;
               },
               onChanged: (nome){
-                _barbeiro.nome=nome;
+                _barbeiro.nome = nome;
               },
-            ),
-            TextFormField(
+            ),  
+             TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),
                 hasFloatingPlaceholder: true,
                 hintText: "Insira o seu CPF (*)"
               ),
-              controller: _cpf,
+              controller: _eCpf,
               keyboardType: TextInputType.number,
               validator: (value) {
                 if(value.isEmpty){
@@ -120,7 +94,7 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
               },
               onChanged: (cpf){
                 _barbeiro.cpf=cpf;
-              },
+              },              
             ),
             DateTimePickerFormField(
                   dateOnly: true,
@@ -128,7 +102,7 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                   editable: false, 
                   format: DateFormat("dd/MM/yyyy"),
                   keyboardType: TextInputType.datetime,
-                  controller: _dataNascimento,
+                  controller: _eDataNascimento,
                   decoration: InputDecoration(
                     fillColor: Colors.redAccent,
                     labelText: 'Data nascimento (*)',
@@ -147,7 +121,7 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                   }
                 ),
              Divider(),
-                Align(
+             Align(
                   alignment: Alignment.center,
                   child: Text("ENDERECO"),
                 ),
@@ -163,7 +137,7 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                     }
                     return null;
                   },
-                  controller: _cidade,
+                  controller: _eCidade,
                   onChanged: (cidade){
                     _barbeiro.cidade=cidade;
                   },
@@ -174,7 +148,7 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                     hasFloatingPlaceholder: true,
                     hintText: "Logradouro (*)"
                   ),
-                  controller: _logradouro,
+                  controller: _eLogradouro,
                   validator: (value) {
                     if(value.isEmpty){
                       return 'Este campo é obrigatório';
@@ -220,18 +194,18 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                     _barbeiro.celular=celular;
                   },
                 ),
-                  Row(
+                Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text("Selecione a sigla do seu estado", 
                       style: TextStyle(fontWeight: FontWeight.bold)),
                       new DropdownButton<Estados>(
                       iconEnabledColor: Colors.red,
-                      value: _estado,
+                      value: _eEstado,
                       onChanged: (Estados newValue) {
                         setState(() {
                           _barbeiro.estado=newValue;
-                          _estado = newValue;
+                          _eEstado = newValue;
                         });
                       },
                     items: Estados.values.map((Estados _estado) {
@@ -239,45 +213,61 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                         value: _estado,
                         child: new Text(_estado.toString().replaceAll("Estados.", "")));
                     }).toList()
-                    )
-                ],
-              ),
-                 Row(
-                    children: <Widget>[
-                      Expanded(
+                    ),
+                    Row(
+                children: <Widget>[
+                  Expanded(
                     child: ButtonTheme(
                       minWidth: double.infinity,
                       child: RaisedButton(
-                        child: Text("Cadastrar"), 
+                        child: Text("Editar"),
                         key: Key("_submitButton"),
-                        onPressed: () async{
-                          if (_formKey.currentState.validate()) {
-                            Future<Barbeiro> fBarbeiro = _saveBarbeiro(_user, _barbeiro);
-                            Barbeiro responseBarbeiro = await fBarbeiro;
-                            if(responseBarbeiro.id != null){
-                              Navigator.push(
-                                context, MaterialPageRoute(builder: (BuildContext context) => LoginPage(sucesso: true,open: false)));
-                            } else {
-                              Text("Algo deu errado, por favor confira se todos os campos foram preenchidos", style: TextStyle(color: Colors.white, backgroundColor: Colors.red),);
-                            }
+                        onPressed: () async {
+                          Barbeiro responseBarbeiro =
+                              await _saveBarbeiro(_eNome, _barbeiro);
+                          if (responseBarbeiro != null &&
+                              responseBarbeiro.id != null) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        new MinhaBarbearia(                                         
+                                          loggedUser: widget.loggedUser,
+                                          sucesso: true,
+                                          open: false,
+                                          mensagem:
+                                              "Usuario alterado com sucesso!",
+                                        )));
+                          } else {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        new MinhaBarbearia(                                            
+                                            loggedUser: widget.loggedUser,
+                                            sucesso: false,
+                                            open: false,
+                                            mensagem:
+                                                "Algo deu errado na alteração do Usuario!")));
                           }
                         },
                         elevation: 3.0,
                         color: Colors.purple,
                         textColor: Colors.white,
-                        ),
                       ),
+                    ),
                   ),
                 ],
               ),
-          ],
-      ),
-    )
-    )
+            ]
+          ),
+          ]
+   )
+    ),
+    ),
     );
   }
-
-  Future<Barbeiro> _saveBarbeiro(User user, Barbeiro barbeiro) async{
+    Future<Barbeiro> _saveBarbeiro(User user, Barbeiro barbeiro) async{
     UserBarbeiroWrapper barbeiroWrapper = new UserBarbeiroWrapper();
     barbeiroWrapper.barbeiro = barbeiro;
     barbeiroWrapper.user = user;
@@ -285,4 +275,6 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
     Barbeiro responseBarbeiro = await fBarbeiro;
     return responseBarbeiro;
   }
-}
+    
+  
+  }

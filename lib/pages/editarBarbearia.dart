@@ -1,5 +1,6 @@
 import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
+import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:flutter/material.dart';
@@ -247,7 +248,7 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                         key: Key("_submitButton"),
                         onPressed: () async {
                           Barbearia responseBarbearia =
-                              await _saveBarbearia(_barbearia);
+                              await _saveBarbearia(_barbearia, widget.loggedUser);
                           if (responseBarbearia != null &&
                               responseBarbearia.id != null) {
                             Navigator.pushReplacement(
@@ -292,15 +293,14 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
     
     }
 
-    Future<Barbearia> _saveBarbearia(Barbearia barbearia) async {
+Future<Barbearia> _saveBarbearia(Barbearia barbearia, User user) async{
+  List<Barbeiro> barbeiros = new List<Barbeiro>();
+  barbeiros.add((user.barbeiro));
+  barbearia.barbeiros = barbeiros;
   Future<Barbearia> fBarbearia = BarbeariaApi.saveBarbearia(barbearia);
-  Barbearia responseServico = await fBarbearia;
-  if (responseServico.id == null) {
-    return new Barbearia();
-  }  
   Barbearia responseBarbearia = await fBarbearia;
-
   return responseBarbearia;
+
 }
 
 }
