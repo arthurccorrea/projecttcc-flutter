@@ -2,6 +2,7 @@ import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/Barbeiro.dart';
 import 'package:appbarbearia_flutter/model/Estados.dart';
+import 'package:appbarbearia_flutter/model/Servico.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/paginaBarbearia.dart';
 import 'package:flutter/material.dart';
@@ -231,6 +232,7 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                         onPressed: () async {  
                           Barbearia responseBarbearia =  await _saveBarbearia(barbearia, widget.loggedUser);
                           if(responseBarbearia.id != null){
+                          responseBarbearia.servicos = new List<Servico>();
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new PaginaBarbearia(barbearia: responseBarbearia, open: false, sucesso: true, mensagem: "Cadastro Efetuado com sucesso")));
                           } else {
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new CadastroBarbearia(sucesso: false, open: false, mensagem: "Ops, algo deu errado, por favor, faça seu cadastro novamente",loggedUser: widget.loggedUser,)));

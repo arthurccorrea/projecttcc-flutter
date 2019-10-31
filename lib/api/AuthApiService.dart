@@ -23,6 +23,8 @@ class AuthApiService {
           tokenFile.writeAsStringSync(token);
           loggedUser.writeAsStringSync(user.username);
           return true;
+      } else {
+        return false;
       }
     }
     bool isTokenValid = await validarToken(token);

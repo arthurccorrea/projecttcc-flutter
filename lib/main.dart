@@ -8,6 +8,7 @@ import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
+import 'package:appbarbearia_flutter/pages/editarBarbeiro.dart';
 import 'package:appbarbearia_flutter/pages/form_marcarHorario.dart';
 import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
 import 'package:appbarbearia_flutter/pages/listagemBarbearia.dart';
@@ -172,6 +173,15 @@ Widget _buildHomePageCliente(
           ),
           new ListTile(
             title: new Text("Cadastro de cliente"),
+            trailing: new Icon(Icons.accessibility),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(new MaterialPageRoute(
+                  builder: (BuildContext context) => new CadastroCliente()));
+            },
+          ),
+          new ListTile(
+            title: new Text("Editar meu perfil"),
             trailing: new Icon(Icons.accessibility),
             onTap: () {
               Navigator.of(context).pop();
@@ -415,6 +425,15 @@ Widget _buildHomePageBarbearia(
                         sucesso: false,
                         open: true,
                       )));
+            },
+          ),
+          new ListTile(
+            title: new Text("Editar meu perfil"),
+            trailing: new Icon(Icons.accessibility),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).push(new MaterialPageRoute(
+                  builder: (BuildContext context) => new EditarBarbeiro(barbeiro: user.barbeiro, loggedUser: user,)));
             },
           ),
         ],

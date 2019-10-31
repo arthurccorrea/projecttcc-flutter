@@ -15,7 +15,11 @@ class PaginaBarbearia extends StatefulWidget {
   final User loggedUser;
 
   const PaginaBarbearia(
-      {this.barbearia, this.sucesso, this.open, this.mensagem, this.loggedUser});
+      {this.barbearia,
+      this.sucesso,
+      this.open,
+      this.mensagem,
+      this.loggedUser});
 
   @override
   _PaginaBarbeariaState createState() => _PaginaBarbeariaState();
@@ -89,28 +93,36 @@ class _MeusServicosState extends State<_MeusServicos> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: ListView.builder(
-      itemCount: widget.barbearia.servicos.length,
-      itemBuilder: (context, i) {
-        return GestureDetector(
-          child: new Card(
-            child: Column(
-              children: <Widget>[
-                Text(widget.barbearia.servicos[i].descricao,
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                Text(
-                  "Preço = R\$" + widget.barbearia.servicos[i].preco.toString(),
-                  style: TextStyle(fontSize: 20),
+      child: Column(
+        children: <Widget>[
+          if(widget.barbearia.servicos == null) Text(
+                "Esta barbearia ainda não possui servicos disponiveis!",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    color: Colors.redAccent),
+              ),
+          for (Servico servico in widget.barbearia.servicos)
+            GestureDetector(
+              child: new Card(
+                child: Column(
+                  children: <Widget>[
+                    Text(servico.descricao,
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    Text(
+                      "Preço = R\$" + servico.preco.toString(),
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
+                  ],
                 ),
-                Padding(padding: EdgeInsets.fromLTRB(0, 5, 0, 0)),
-              ],
+              ),
+              onTap: () {},
             ),
-          ),
-          onTap: () {},
-        );
-      },
-    ));
+        ],
+      ),
+    );
   }
 }
 
@@ -127,7 +139,7 @@ class _DescricaoBarbearia extends StatefulWidget {
       this.loggedUser,
       this.open,
       this.sucesso,
-      this.mensagem, 
+      this.mensagem,
       this.servicos});
 
   @override
@@ -195,25 +207,34 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
           ],
         ),
         Text(""),
-         widget.barbearia.servicos.length > 0 ? ButtonTheme(
-          minWidth: double.infinity,
-          child: RaisedButton(
-            child: Text("Marcar horário"),
-            elevation: 5.0,
-            onPressed: () {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => new HorariosBarbearia(
-                            barbearia: widget.barbearia,
-                            loggedUser: widget.loggedUser,
-                            horariosBarbearia: new List<Horario>(),
-                            data: null,
-                            minhaBarbearia: false,
-                          )));
-            },
-          ),
-        ) : Text("Esta barbearia ainda não possui servicos disponiveis!", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, color: Colors.redAccent),),
+        widget.barbearia != null && widget.barbearia.servicos.length > 0
+            ? ButtonTheme(
+                minWidth: double.infinity,
+                child: RaisedButton(
+                  child: Text("Marcar horário"),
+                  elevation: 5.0,
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                new HorariosBarbearia(
+                                  barbearia: widget.barbearia,
+                                  loggedUser: widget.loggedUser,
+                                  horariosBarbearia: new List<Horario>(),
+                                  data: null,
+                                  minhaBarbearia: false,
+                                )));
+                  },
+                ),
+              )
+            : Text(
+                "Esta barbearia ainda não possui servicos disponiveis!",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25,
+                    color: Colors.redAccent),
+              ),
         !widget.open && widget.sucesso
             ? Text(widget.mensagem,
                 style: TextStyle(

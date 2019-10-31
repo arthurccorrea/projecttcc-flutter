@@ -39,15 +39,18 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
 
   @override
   void initState() {
+    _barbearia = widget.barbearia;
+    DateFormat getHora = new DateFormat("HH");
+    DateFormat getMinutos = new DateFormat("mm");
     _eNome = TextEditingController(text: widget.barbearia.nome);
     _eDescricao = TextEditingController(text: widget.barbearia.descricao);
     _eCidade = TextEditingController(text: widget.barbearia.cidade);
-    _eEstado = Estados.AC;
+    _eEstado = widget.barbearia.estado;
     _eEndereco = TextEditingController(text: widget.barbearia.descricao);
-    _ehoraAbertura = 1;
-    _eminutoAbertura = 0;
-    _ehoraFechamento = 1;
-    _eminutoFechamento = 0;
+    _ehoraAbertura = int.parse(getHora.format(widget.barbearia.horarioAbertura));
+    _eminutoAbertura = int.parse(getMinutos.format(widget.barbearia.horarioAbertura));
+    _ehoraFechamento = int.parse(getHora.format(widget.barbearia.horarioFechamento));
+    _eminutoFechamento = int.parse(getMinutos.format(widget.barbearia.horarioFechamento));
     super.initState();
   }
 
