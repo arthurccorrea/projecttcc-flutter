@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 
 class PesquisaBarbearias extends StatefulWidget {
   final User loggedUser;
+  final List<Barbearia> barbearias;
 
-  const PesquisaBarbearias({this.loggedUser});
+  const PesquisaBarbearias({this.loggedUser, this.barbearias});
 
   @override
   _PesquisaBarbeariasState createState() => _PesquisaBarbeariasState();
@@ -16,8 +17,15 @@ class PesquisaBarbearias extends StatefulWidget {
 class _PesquisaBarbeariasState extends State<PesquisaBarbearias> {
   final _formKey = GlobalKey<FormState>();
   String _busca = "";
-  List<Barbearia> barbearias = new List<Barbearia>();
+  List<Barbearia> barbearias;
   var _eBusca = new TextEditingController();
+
+  @override
+  void initState() {
+    barbearias = widget.barbearias;
+    super.initState();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +42,7 @@ class _PesquisaBarbeariasState extends State<PesquisaBarbearias> {
               children: <Widget>[
                 TextFormField(
                 decoration: const InputDecoration(
-                    icon: Icon(Icons.person),
+                    icon: Icon(Icons.search),
                     hasFloatingPlaceholder: true,
                     hintText: "Insira o nome da barbearia para busca"),
                 controller: _eBusca,
@@ -54,12 +62,10 @@ class _PesquisaBarbeariasState extends State<PesquisaBarbearias> {
                   icon: Icon(Icons.search),
                   label: Text("Pesquisar"),
                   textColor: Colors.white,
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState.validate()){
-                      setState(() async {
                       List<Barbearia> _barbeariaResponse = await BarbeariaApi.findByNome(_busca);
-                      barbearias = _barbeariaResponse;
-                      });
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) => new PesquisaBarbearias(loggedUser: widget.loggedUser, barbearias: _barbeariaResponse,)));
                     }
                   },
                 ),

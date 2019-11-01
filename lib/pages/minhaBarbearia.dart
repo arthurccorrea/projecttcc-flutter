@@ -182,7 +182,7 @@ DateFormat dateFormat = DateFormat("HH:mm");
           ],
         ),
         Text(""),
-         ButtonTheme(
+         if(widget.barbearia.servicos != null && widget.barbearia.servicos.length > 0) ButtonTheme(
           minWidth: double.infinity,
           child: RaisedButton(
           child: Text("Marcar horário"),
