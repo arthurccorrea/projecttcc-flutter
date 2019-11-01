@@ -259,7 +259,6 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                           }
                         },
                         elevation: 3.0,
-                        //color: Colors.purple,
                         textColor: Colors.white,
                         ),
                       ),

@@ -9,7 +9,6 @@ import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CadastroCliente extends StatefulWidget {
   final sucesso;
@@ -40,7 +39,6 @@ class _CadastroClienteState extends State<CadastroCliente> {
   User _user = new User();
   final _formKey = GlobalKey<FormState>();
 
-// TODO: VALIDAR @ E .COM NOS EMAILS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,6 +56,9 @@ class _CadastroClienteState extends State<CadastroCliente> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Este campo é obrigatório';
+                  }
+                  if(!value.contains('@')) {
+                    return "Por favor, digite um email valido";
                   }
                   return null;
                 },
@@ -81,6 +82,9 @@ class _CadastroClienteState extends State<CadastroCliente> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Este campo é obrigatório';
+                  }
+                  if(value.length < 6 || value.length > 16) {
+                    return 'A senha precisa ter entre 6 e 16 caracteres';  
                   }
                   return null;
                 },
@@ -109,6 +113,9 @@ class _CadastroClienteState extends State<CadastroCliente> {
                 validator: (value) {
                   if (value.isEmpty) {
                     return 'Este campo é obrigatório';
+                  }
+                  if(value.length > 32) {
+                    return 'O nome não pode ser maior que 32 caracteres';
                   }
                   return null;
                 },
@@ -205,12 +212,6 @@ class _CadastroClienteState extends State<CadastroCliente> {
                   hintText: "Telefone",
                 ),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Este campo é obrigatório';
-                  }
-                  return null;
-                },
                 controller: _eTelefone,
                 onChanged: (telefone) {
                   _cliente.telefone = telefone;
@@ -223,6 +224,12 @@ class _CadastroClienteState extends State<CadastroCliente> {
                     hintText: "Celular (*)"),
                 keyboardType: TextInputType.number,
                 controller: _eCelular,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Este campo é obrigatório';
+                  }
+                  return null;
+                }, 
                 onChanged: (celular) {
                   _cliente.celular = celular;
                 },
@@ -280,7 +287,6 @@ class _CadastroClienteState extends State<CadastroCliente> {
                           }
                         },
                         elevation: 3.0,
-                        //color: Colors.purple,
                         textColor: Colors.white,
                       ),
                     ),

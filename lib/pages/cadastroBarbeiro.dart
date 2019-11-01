@@ -58,6 +58,9 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                 if(value.isEmpty){
                   return 'Este campo é obrigatório';
                 }
+                if(!value.contains('@')) {
+                  return "Por favor, digite um email valido";
+                }
                 return null;
               },
               decoration: const InputDecoration(
@@ -80,6 +83,9 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
               validator: (value) {
                 if(value.isEmpty){
                   return 'Este campo é obrigatório';
+                }
+                if(value.length < 6 || value.length > 16) {
+                  return 'A senha precisa ter entre 6 e 16 caracteres';  
                 }
                 return null;
               },
@@ -110,6 +116,9 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                 if(value.isEmpty){
                   return 'Este campo é obrigatório';
                 }
+                if(value.length > 32) {
+                    return 'O nome não pode ser maior que 32 caracteres';
+                  }
                 return null;
               },
               onChanged: (nome){
@@ -209,12 +218,6 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                       hintText: "Telefone",
                   ),
                   keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if(value.isEmpty){
-                      return 'Este campo é obrigatório';
-                    }
-                    return null;
-                  },
                   controller: _eTelefone,
                   onChanged: (telefone){
                     _barbeiro.telefone=telefone;
@@ -228,6 +231,12 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                   ),
                   keyboardType: TextInputType.number,
                   controller: _eCelular,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Este campo é obrigatório';
+                    }
+                    return null;
+                  }, 
                   onChanged: (celular){
                     _barbeiro.celular=celular;
                   },
@@ -275,7 +284,6 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                           }
                         },
                         elevation: 3.0,
-                        //color: Colors.purple,
                         textColor: Colors.white,
                         ),
                       ),

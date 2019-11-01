@@ -276,7 +276,6 @@ class _CadastroBarbeiroParaMinhaBarbeariaState extends State<CadastroBarbeiroPar
                           }
                         },
                         elevation: 3.0,
-                        color: Colors.purple,
                         textColor: Colors.white,
                         ),
                       ),

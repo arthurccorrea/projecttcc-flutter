@@ -59,6 +59,9 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                     if(value.isEmpty){
                       return 'Este campo é obrigatório';
                     }
+                    if(value.length > 32) {
+                      return 'O nome não pode ser maior que 32 caracteres';
+                    }
                     return null;
                   },
                   controller: _nome,
@@ -87,6 +90,9 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                   validator: (value) {
                     if(value.isEmpty){
                       return 'Este campo é obrigatório';
+                    }
+                    if(value.length > 100) {
+                      return 'A descrição deve ter no máximo 100 caracteres';
                     }
                     return null;
                   },
@@ -252,7 +258,6 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                           }
                         },
                         elevation: 3.0,
-                        // color: Colors.purple,
                         textColor: Colors.white,
                         ),
                       ),

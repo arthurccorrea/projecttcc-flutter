@@ -296,7 +296,6 @@ class _CadastroServicoState extends State<_CadastroServico> {
                     }
                   },
                   elevation: 3.0,
-                  //color: Colors.purple,
                   textColor: Colors.white,
                   ),
                 ),

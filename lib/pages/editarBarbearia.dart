@@ -300,7 +300,6 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
                           }
                         },
                         elevation: 3.0,
-                        //color: Colors.purple,
                         textColor: Colors.white,
                       ),
                     ),

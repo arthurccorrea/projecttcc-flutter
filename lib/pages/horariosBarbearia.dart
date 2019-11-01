@@ -48,7 +48,6 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
         child: ListView(
           children: <Widget>[
             DateTimePickerFormField(
-              // TODO: ADICIONAR VALIDATOR PRA NÃO DEIXAR PROCURAR SEM DATA
                 firstDate: DateTime.now(),
                 dateOnly: true,
                 inputType: InputType.date,
@@ -90,23 +89,26 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
                 child: Text("Procurar"),
                 key: Key("_searchButton"),
                 onPressed: () async {
-                  List<Horario> _horariosBarbearia =
-                      await _listaHorariosDisponiveisPorData(
-                          _data, _barbeiro);
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              new HorariosBarbearia(
-                                barbearia: widget.barbearia,
-                                loggedUser: widget.loggedUser,
-                                horariosBarbearia: _horariosBarbearia,
-                                data: _data,
-                                minhaBarbearia: widget.minhaBarbearia
-                              )));
+                  if(_data != null) {
+
+                  
+                    List<Horario> _horariosBarbearia =
+                        await _listaHorariosDisponiveisPorData(
+                            _data, _barbeiro);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                new HorariosBarbearia(
+                                  barbearia: widget.barbearia,
+                                  loggedUser: widget.loggedUser,
+                                  horariosBarbearia: _horariosBarbearia,
+                                  data: _data,
+                                  minhaBarbearia: widget.minhaBarbearia
+                                )));
+                  }
                 },
                 elevation: 3.0,
-                //color: Colors.purple,
                 textColor: Colors.white,
               ),
             ),

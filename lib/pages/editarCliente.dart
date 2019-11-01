@@ -259,7 +259,6 @@ class _EditarClienteState extends State<EditarCliente> {
                           }
                         },
                         elevation: 3.0,
-                        //color: Colors.purple,
                         textColor: Colors.white,      
                       )
                     )
