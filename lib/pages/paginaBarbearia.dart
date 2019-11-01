@@ -151,6 +151,7 @@ class _DescricaoBarbeariaState extends State<_DescricaoBarbearia> {
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
           textAlign: TextAlign.center,
         ),
+        if(widget.barbearia.foto != null) Image.network(widget.barbearia.foto),
         Text(""),
         Text(
           " " + widget.barbearia.descricao,

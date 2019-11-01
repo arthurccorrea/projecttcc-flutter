@@ -161,6 +161,7 @@ DateFormat dateFormat = DateFormat("HH:mm");
         Text(""),
         Text(" " + widget.barbearia.descricao,style: TextStyle(fontSize: 25), textAlign: TextAlign.center, ),       
         Text(""),
+        if(widget.barbearia.foto != null) Image.network(widget.barbearia.foto),
         Wrap(
           children: <Widget>[
             Text("Local :", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),

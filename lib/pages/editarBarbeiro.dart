@@ -75,7 +75,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                   decoration: const InputDecoration(
                     icon: Icon(FontAwesomeIcons.image),
                     hasFloatingPlaceholder: true,
-                    hintText: "Coloque uma imagem da sua barbearia"
+                    hintText: "Coloque uma foto sua"
                   ),
                   controller: _eFoto,
                   onChanged: (foto) {
@@ -122,8 +122,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                   inputType: InputType.date,
                   editable: false, 
                   format: DateFormat("dd/MM/yyyy"),
-                  keyboardType: TextInputType.datetime,
-                  controller: _eDataNascimento,
+                  keyboardType: TextInputType.datetime,                  
                   decoration: InputDecoration(
                     fillColor: Colors.redAccent,
                     labelText: 'Data nascimento (*)',
@@ -136,8 +135,10 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                     }
                     return null;
                   },
+                  controller: _eDataNascimento,
                   onChanged: (dt) {
                     _barbeiro.dataNascimento=dt;
+                    dt = _barbeiro.dataNascimento;
                     Text(DateFormat("dd-MM-yyyy").format(dt));
                   }
                 ),

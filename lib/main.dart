@@ -138,7 +138,7 @@ Widget _buildHomePageCliente(
             accountEmail: new Text(user.username),
             currentAccountPicture: new CircleAvatar(
               backgroundColor: Colors.black38,
-              child: new Text(user.cliente.nome.substring(0, 1)),
+              child: user.cliente.foto != null ? new Image.network(user.cliente.foto) : new Text(user.cliente.nome.substring(0, 1)),
             ),
           ),          
           new ListTile(
@@ -320,7 +320,8 @@ Widget _buildHomePageBarbearia(
             accountEmail: new Text(user.username),
             currentAccountPicture: new CircleAvatar(
               backgroundColor: Colors.black38,
-              child: new Text(user.barbeiro.nome.substring(0, 1)),
+              child: user.barbeiro.foto != null ? new Image.network(user.barbeiro.foto) : new Text(user.barbeiro.nome.substring(0, 1)),                
+              
             ),
           ),
           new ListTile(

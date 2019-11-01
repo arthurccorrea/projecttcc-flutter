@@ -75,7 +75,7 @@ class _EditarClienteState extends State<EditarCliente> {
                   decoration: const InputDecoration(
                     icon: Icon(FontAwesomeIcons.image),
                     hasFloatingPlaceholder: true,
-                    hintText: "Coloque uma imagem da sua barbearia"
+                    hintText: "Coloque uma foto sua"
                   ),
                   controller: _eFoto,
                   onChanged: (foto) {
