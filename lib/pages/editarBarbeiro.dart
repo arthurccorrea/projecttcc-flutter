@@ -122,7 +122,8 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                   inputType: InputType.date,
                   editable: false, 
                   format: DateFormat("dd/MM/yyyy"),
-                  keyboardType: TextInputType.datetime,                  
+                  keyboardType: TextInputType.datetime,          
+                  locale: Locale("pt"),        
                   decoration: InputDecoration(
                     fillColor: Colors.redAccent,
                     labelText: 'Data nascimento (*)',
@@ -137,9 +138,11 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                   },
                   controller: _eDataNascimento,
                   onChanged: (dt) {
-                    _barbeiro.dataNascimento=dt;
-                    dt = _barbeiro.dataNascimento;
-                    Text(DateFormat("dd-MM-yyyy").format(dt));
+                    if(dt != null) {
+                      _barbeiro.dataNascimento=dt;
+                      // dt = _barbeiro.dataNascimento;
+                      Text(DateFormat("dd-MM-yyyy").format(dt));
+                    }
                   }
                 ),
              Divider(),

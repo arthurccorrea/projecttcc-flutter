@@ -52,17 +52,6 @@ class _CadastroBarbeiroParaMinhaBarbeariaState extends State<CadastroBarbeiroPar
           padding: EdgeInsets.all(15.0),
           children: <Widget>[
             TextFormField(
-              decoration: const InputDecoration(
-                icon: Icon(FontAwesomeIcons.image),
-                hasFloatingPlaceholder: true,
-                hintText: "Coloque uma foto sua"
-              ),
-              controller: _eFoto,
-              onChanged: (foto) {
-                _barbeiro.foto = foto;
-              },
-            ),
-            TextFormField(
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
               validator: (value) {
@@ -105,7 +94,7 @@ class _CadastroBarbeiroParaMinhaBarbeariaState extends State<CadastroBarbeiroPar
                     hasFloatingPlaceholder: true,
                     hintText: "Coloque uma foto"
                   ),
-                  controller: _nome,
+                  controller: _eFoto,
                   onChanged: (foto) {
                     _barbeiro.foto = foto;
                   },
@@ -151,6 +140,7 @@ class _CadastroBarbeiroParaMinhaBarbeariaState extends State<CadastroBarbeiroPar
                   editable: false, 
                   format: DateFormat("dd/MM/yyyy"),
                   keyboardType: TextInputType.datetime,
+                  locale: Locale("pt"),
                   controller: _dataNascimento,
                   decoration: InputDecoration(
                     fillColor: Colors.redAccent,
@@ -165,8 +155,10 @@ class _CadastroBarbeiroParaMinhaBarbeariaState extends State<CadastroBarbeiroPar
                     return null;
                   },
                   onChanged: (dt) {
-                    _barbeiro.dataNascimento=dt;
-                    Text(DateFormat("dd-MM-yyyy").format(dt));
+                    if(dt != null) {
+                      _barbeiro.dataNascimento=dt;
+                      Text(DateFormat("dd-MM-yyyy").format(dt));
+                    }
                   }
                 ),
              Divider(),

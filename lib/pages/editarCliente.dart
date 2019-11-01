@@ -123,6 +123,7 @@ class _EditarClienteState extends State<EditarCliente> {
                   editable: false, 
                   format: DateFormat("dd/MM/yyyy"),
                   keyboardType: TextInputType.datetime,
+                  locale: Locale("pt"),
                   controller: _eDataNascimento,
                   decoration: InputDecoration(
                     fillColor: Colors.redAccent,
@@ -137,8 +138,10 @@ class _EditarClienteState extends State<EditarCliente> {
                     return null;
                   },
                   onChanged: (dt) {
-                    _cliente.dataNascimento=dt;
-                    Text(DateFormat("dd-MM-yyyy").format(dt));
+                    if(dt != null) {
+                      _cliente.dataNascimento=dt;
+                      Text(DateFormat("dd-MM-yyyy").format(dt));
+                    }
                   }
                 ),
              Divider(),

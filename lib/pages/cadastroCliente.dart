@@ -145,6 +145,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
                   inputType: InputType.date,
                   editable: false,
                   format: DateFormat("dd/MM/yyyy"),
+                  locale: Locale("pt"),
                   keyboardType: TextInputType.datetime,
                   controller: _dataNascimento,
                   decoration: InputDecoration(
@@ -160,8 +161,10 @@ class _CadastroClienteState extends State<CadastroCliente> {
                     return null;
                   },
                   onChanged: (dt) {
-                    _cliente.dataNascimento = dt;
-                    Text(DateFormat("dd-MM-yyyy").format(dt));
+                    if(dt != null) {
+                      _cliente.dataNascimento = dt;
+                      Text(DateFormat("dd-MM-yyyy").format(dt));
+                    }
                   }),
               Divider(),
               Align(

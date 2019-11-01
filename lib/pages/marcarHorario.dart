@@ -98,7 +98,7 @@ class _MarcarHorarioState extends State<MarcarHorario> {
                 ) : Text(""),
             Row(
               children: <Widget>[
-                Text("Barbeiro: " )
+                Text("Barbeiro: " + widget.barbeiro.nome)
               ],
             ),
             Row(

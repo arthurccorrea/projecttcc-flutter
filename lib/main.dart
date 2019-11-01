@@ -7,7 +7,6 @@ import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/HorarioMarcado.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
 import 'package:appbarbearia_flutter/pages/cadastroBarbearia.dart';
-import 'package:appbarbearia_flutter/pages/cadastroCliente.dart';
 import 'package:appbarbearia_flutter/pages/editarBarbeiro.dart';
 import 'package:appbarbearia_flutter/pages/editarCliente.dart';
 import 'package:appbarbearia_flutter/pages/horarioMarcadoPage.dart';
@@ -17,7 +16,9 @@ import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/pesquisasBarbearias.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
+
 
 AuthApiService appAuth = new AuthApiService();
 String token;
@@ -54,6 +55,13 @@ void main() async {
 
   // Run app!
   runApp(new MaterialApp(
+    localizationsDelegates: [
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate
+    ],
+    supportedLocales: [
+      Locale("pt"),
+    ],
     title: 'App',
     home: _defaultHome,
     routes: <String, WidgetBuilder>{
@@ -366,15 +374,6 @@ Widget _buildHomePageBarbearia(
                           minhasBarbearias: false,
                         )));
               });
-            },
-          ),
-          new ListTile(
-            title: new Text("Cadastro de cliente"),
-            trailing: new Icon(FontAwesomeIcons.userPlus),
-            onTap: () {
-              Navigator.of(context).pop();
-              Navigator.of(context).push(new MaterialPageRoute(
-                  builder: (BuildContext context) => new CadastroCliente()));
             },
           ),
           new ListTile(

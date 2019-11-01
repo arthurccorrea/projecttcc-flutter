@@ -149,6 +149,9 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                   editable: false, 
                   format: DateFormat("dd/MM/yyyy"),
                   keyboardType: TextInputType.datetime,
+                  lastDate: DateTime.now().add(new Duration(hours: 5)),
+                  initialValue: DateTime.now(),                  
+                  locale: Locale("pt"),
                   controller: _dataNascimento,
                   decoration: InputDecoration(
                     fillColor: Colors.redAccent,
@@ -163,8 +166,10 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                     return null;
                   },
                   onChanged: (dt) {
-                    _barbeiro.dataNascimento=dt;
-                    Text(DateFormat("dd-MM-yyyy").format(dt));
+                    if(dt != null) {
+                      _barbeiro.dataNascimento=dt;
+                      Text(DateFormat("dd-MM-yyyy").format(dt));
+                    }
                   }
                 ),
              Divider(),

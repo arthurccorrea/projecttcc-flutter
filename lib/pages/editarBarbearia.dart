@@ -315,9 +315,6 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
     }
 
 Future<Barbearia> _saveBarbearia(Barbearia barbearia, User user) async{
-  List<Barbeiro> barbeiros = new List<Barbeiro>();
-  barbeiros.add((user.barbeiro));
-  barbearia.barbeiros = barbeiros;
   Future<Barbearia> fBarbearia = BarbeariaApi.saveBarbearia(barbearia);
   Barbearia responseBarbearia = await fBarbearia;
   return responseBarbearia;

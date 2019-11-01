@@ -45,6 +45,7 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
         title: Text("Horarios"),
       ),
       body: Container(
+        margin: EdgeInsets.all(7),
         child: ListView(
           children: <Widget>[
             DateTimePickerFormField(
