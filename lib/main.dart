@@ -143,7 +143,7 @@ Widget _buildHomePageCliente(
           ),          
           new ListTile(
             title: new Text("Listagem barberias"),
-            trailing: new Icon(Icons.accessibility),
+            trailing: new Icon(FontAwesomeIcons.list),
             onTap: () async {
               List<Barbearia> barbearias = await BarbeariaApi.findAllByUser(user);
               Navigator.of(context).pop();
@@ -158,7 +158,7 @@ Widget _buildHomePageCliente(
           new Divider(),
           new ListTile(
             title: new Text("Editar meu perfil"),
-            trailing: new Icon(Icons.accessibility),
+            trailing: new Icon(FontAwesomeIcons.userEdit),
              onTap: () {
               Navigator.of(context).pop();
               Navigator.of(context).push(new MaterialPageRoute(
@@ -166,7 +166,7 @@ Widget _buildHomePageCliente(
             },
           ),new ListTile(
             title: new Text("Logout"),
-            trailing: new Icon(Icons.close),
+            trailing: new Icon(FontAwesomeIcons.signOutAlt),
             onTap: () {
               authService.logout();
               Navigator.of(context).pushReplacement(new MaterialPageRoute(

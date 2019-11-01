@@ -24,7 +24,7 @@ class CadastroBarbeiroParaMinhaBarbearia extends StatefulWidget {
 }
 
 class _CadastroBarbeiroParaMinhaBarbeariaState extends State<CadastroBarbeiroParaMinhaBarbearia> {
-  var _foto = TextEditingController();
+  var _eFoto = TextEditingController();
   var _nome = TextEditingController();
   var _cpf = new MaskedTextController(mask: '000.000.000-00');
   DateFormat dateFormat = new DateFormat("yyyy-MM-dd");
@@ -51,6 +51,17 @@ class _CadastroBarbeiroParaMinhaBarbeariaState extends State<CadastroBarbeiroPar
           shrinkWrap: true,
           padding: EdgeInsets.all(15.0),
           children: <Widget>[
+            TextFormField(
+              decoration: const InputDecoration(
+                icon: Icon(FontAwesomeIcons.image),
+                hasFloatingPlaceholder: true,
+                hintText: "Coloque uma foto sua"
+              ),
+              controller: _eFoto,
+              onChanged: (foto) {
+                _barbeiro.foto = foto;
+              },
+            ),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               autocorrect: false,
