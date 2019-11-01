@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class EditarBarbeiro extends StatefulWidget {
@@ -134,7 +135,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.location_city),
+                    icon: Icon(Icons.map),
                     hasFloatingPlaceholder: true,
                     hintText: "Cidade (*)"
                   ),
@@ -151,7 +152,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.landscape),
+                    icon: Icon(FontAwesomeIcons.home),
                     hasFloatingPlaceholder: true,
                     hintText: "Logradouro (*)"
                   ),

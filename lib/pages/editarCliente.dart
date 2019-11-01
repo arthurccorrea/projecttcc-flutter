@@ -9,6 +9,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
 import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../main.dart';
 
@@ -151,7 +152,7 @@ class _EditarClienteState extends State<EditarCliente> {
                 ),
                 TextFormField(
                   decoration: const InputDecoration(
-                    icon: Icon(Icons.landscape),
+                    icon: Icon(FontAwesomeIcons.home),
                     hasFloatingPlaceholder: true,
                     hintText: "Logradouro (*)"
                   ),

@@ -106,7 +106,7 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
                               )));
                 },
                 elevation: 3.0,
-                color: Colors.purple,
+                //color: Colors.purple,
                 textColor: Colors.white,
               ),
             ),
