@@ -23,6 +23,7 @@ class EditarBarbearia extends StatefulWidget {
 class _EditarBarbeariaState extends State<EditarBarbearia>{
   Barbearia _barbearia;
   final _formKey = GlobalKey<FormState>();
+  var _eFoto;
   var _eNome;
   var _eDescricao;
   var _eCidade;
@@ -42,6 +43,7 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
     _barbearia = widget.barbearia;
     DateFormat getHora = new DateFormat("HH");
     DateFormat getMinutos = new DateFormat("mm");
+    _eFoto = TextEditingController(text: widget.barbearia.foto);
     _eNome = TextEditingController(text: widget.barbearia.nome);
     _eDescricao = TextEditingController(text: widget.barbearia.descricao);
     _eCidade = TextEditingController(text: widget.barbearia.cidade);
@@ -70,6 +72,17 @@ class _EditarBarbeariaState extends State<EditarBarbearia>{
           key: _formKey,
           child: ListView(
             children: <Widget> [
+              TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(FontAwesomeIcons.image),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Coloque uma imagem da sua barbearia"
+                  ),
+                  controller: _eFoto,
+                  onChanged: (foto) {
+                    _barbearia.foto = foto;
+                  },
+                ),
             TextFormField(
               autocorrect: false,
               validator: (value) {

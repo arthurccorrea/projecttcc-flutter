@@ -22,6 +22,7 @@ class CadastroBarbearia extends StatefulWidget {
 
 class _CadastroBarbeariaState extends State<CadastroBarbearia> {
   Barbearia barbearia = new Barbearia();
+  var _foto = TextEditingController();
   var _nome = TextEditingController();
   var _descricao = TextEditingController();
   var _cidade = TextEditingController();
@@ -63,6 +64,17 @@ class _CadastroBarbeariaState extends State<CadastroBarbearia> {
                   controller: _nome,
                   onChanged: (nome){
                     barbearia.nome = nome;
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(FontAwesomeIcons.image),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Coloque uma imagem da sua barbearia"
+                  ),
+                  controller:  _foto,
+                  onChanged: (foto) {
+                    barbearia.foto = foto;
                   },
                 ),
                 TextFormField(

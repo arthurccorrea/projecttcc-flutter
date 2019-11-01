@@ -25,6 +25,7 @@ class EditarCliente extends StatefulWidget{
 
 class _EditarClienteState extends State<EditarCliente> {
   Cliente _cliente;
+  var _eFoto;
   var _eNome;
   var _eCpf;
   var _eDataNascimento;
@@ -40,6 +41,7 @@ class _EditarClienteState extends State<EditarCliente> {
   void initState() {
     _cliente = widget.cliente;
     DateFormat formataDataNascimento = new DateFormat("dd/MM/yyyy");
+    _eFoto = TextEditingController(text: widget.cliente.foto);
     _eNome = TextEditingController(text: widget.cliente.nome);
     _eCpf = new MaskedTextController(
         mask: '000.000.000-00', text: widget.cliente.cpf);
@@ -69,6 +71,17 @@ class _EditarClienteState extends State<EditarCliente> {
             shrinkWrap: true,
             padding: EdgeInsets.all(15.0),
             children: <Widget>[
+              TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(FontAwesomeIcons.image),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Coloque uma imagem da sua barbearia"
+                  ),
+                  controller: _eFoto,
+                  onChanged: (foto) {
+                    _cliente.foto = foto;
+                  },
+                ),
                TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),

@@ -26,6 +26,7 @@ class EditarBarbeiro extends StatefulWidget {
 
 class _EditarBarbeiroState extends State<EditarBarbeiro> {
   Barbeiro _barbeiro;
+  var _eFoto;
   var _eNome;
   var _eCpf;
   var _eDataNascimento;
@@ -41,6 +42,7 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
   void initState() {
     _barbeiro = widget.barbeiro;
     DateFormat formataDataNascimento = new DateFormat("dd/MM/yyyy");
+    _eFoto = TextEditingController(text: widget.barbeiro.foto);
     _eNome = TextEditingController(text: widget.barbeiro.nome);
     _eCpf = new MaskedTextController(
         mask: '000.000.000-00', text: widget.barbeiro.cpf);
@@ -69,6 +71,17 @@ class _EditarBarbeiroState extends State<EditarBarbeiro> {
           shrinkWrap: true,
           padding: EdgeInsets.all(15.0),
           children: <Widget>[
+            TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(FontAwesomeIcons.image),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Coloque uma imagem da sua barbearia"
+                  ),
+                  controller: _eFoto,
+                  onChanged: (foto) {
+                    _barbeiro.foto = foto;
+                  },
+                ),
             TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),

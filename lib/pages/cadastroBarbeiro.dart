@@ -23,6 +23,7 @@ class CadastroBarbeiro extends StatefulWidget {
 }
 
 class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
+  var _foto = TextEditingController();
   var _nome = TextEditingController();
   var _cpf = new MaskedTextController(mask: '000.000.000-00');
   // DateTime _dataNascimento;
@@ -87,6 +88,17 @@ class _CadastroBarbeiroState extends State<CadastroBarbeiro> {
                 _user.password = password;
               },
             ),
+            TextFormField(
+                  decoration: const InputDecoration(
+                    icon: Icon(FontAwesomeIcons.image),
+                    hasFloatingPlaceholder: true,
+                    hintText: "Coloque uma foto"
+                  ),
+                  controller: _foto,
+                  onChanged: (foto) {
+                    _barbeiro.foto = foto;
+                  },
+                ),
             TextFormField(
               decoration: const InputDecoration(
                 icon: Icon(Icons.person),
