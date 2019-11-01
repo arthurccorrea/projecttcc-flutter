@@ -151,6 +151,7 @@ Widget _buildHomePageCliente(
                   builder: (BuildContext context) => new ListagemBarbearia(
                         barbearias: barbearias,
                         loggedUser: user,
+                        minhasBarbearias: false,
                       )));
             },
           ),
@@ -264,6 +265,7 @@ Widget _buildHomePageCliente(
                                 new ListagemBarbearia(
                                   loggedUser: user,
                                   barbearias: barbearias,
+                                  minhasBarbearias: false,
                                 )));
                     }),
               )
@@ -275,7 +277,7 @@ Widget _buildHomePageCliente(
     floatingActionButton: FloatingActionButton(
       child: Icon(Icons.search),
       onPressed: () {
-        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new PesquisaBarbearias(loggedUser: user,)));
+        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new PesquisaBarbearias(loggedUser: user, barbearias: new List<Barbearia>(),)));
       },
       ),
   );
@@ -344,7 +346,7 @@ Widget _buildHomePageBarbearia(
               } else {
                 Navigator.of(context).push(new MaterialPageRoute(
                     builder: (BuildContext context) => new ListagemBarbearia(
-                        barbearias: minhasBarbearias, loggedUser: user)));
+                        barbearias: minhasBarbearias, loggedUser: user, minhasBarbearias: true,)));
               }
             },
           ),
@@ -360,6 +362,7 @@ Widget _buildHomePageBarbearia(
                     builder: (BuildContext context) => new ListagemBarbearia(
                           loggedUser: user,
                           barbearias: barbearias,
+                          minhasBarbearias: false,
                         )));
               });
             },
@@ -490,6 +493,7 @@ Widget _buildHomePageBarbearia(
                                 new ListagemBarbearia(
                                   loggedUser: user,
                                   barbearias: barbearias,
+                                  minhasBarbearias: false,
                                 )));
                       });
                     }),
@@ -502,7 +506,7 @@ Widget _buildHomePageBarbearia(
     floatingActionButton: FloatingActionButton(
       child: Icon(Icons.search),
       onPressed: () {
-        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new PesquisaBarbearias(loggedUser: user,)));
+        Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new PesquisaBarbearias(loggedUser: user, barbearias: new List<Barbearia>(),)));
       },),
   );
 }

@@ -129,8 +129,13 @@ class _HorariosBarbeariaState extends State<HorariosBarbearia> {
                           )));
                 },
                 child: Card(
-                  child: Row(
-                    children: <Widget>[Text(dateFormat.format(horario.hora))],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(""),
+                      Text(dateFormat.format(horario.hora), textAlign: TextAlign.center,),
+                      Text(""),
+                    ],
                   ),
                 ),
               ),

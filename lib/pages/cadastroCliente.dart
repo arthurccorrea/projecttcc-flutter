@@ -40,6 +40,7 @@ class _CadastroClienteState extends State<CadastroCliente> {
   User _user = new User();
   final _formKey = GlobalKey<FormState>();
 
+// TODO: VALIDAR @ E .COM NOS EMAILS
   @override
   Widget build(BuildContext context) {
     return Scaffold(

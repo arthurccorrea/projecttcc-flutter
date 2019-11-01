@@ -114,8 +114,10 @@ class BarbeariaApi {
     http.Response response = await fResponse;
     List<Barbearia> barbearias = new List<Barbearia>();
     await fResponse.whenComplete( () {
-      var responseList = json.decode(response.body) as List;
-      barbearias = responseList.map((i)=>Barbearia.fromJson(i)).toList();
+      if(response.body.isNotEmpty){
+        var responseList = json.decode(response.body) as List;
+        barbearias = responseList.map((i)=>Barbearia.fromJson(i)).toList();
+      }
     });
 
     return barbearias;

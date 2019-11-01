@@ -1,14 +1,16 @@
 import 'package:appbarbearia_flutter/api/BarbeariaApi.dart';
 import 'package:appbarbearia_flutter/model/Barbearia.dart';
 import 'package:appbarbearia_flutter/model/User.dart';
+import 'package:appbarbearia_flutter/pages/minhaBarbearia.dart';
 import 'package:appbarbearia_flutter/pages/paginaBarbearia.dart';
 import 'package:flutter/material.dart';
 
 class ListagemBarbearia extends StatefulWidget {
   final User loggedUser;
   final List<Barbearia> barbearias;
+  final bool minhasBarbearias;
 
-  const ListagemBarbearia({this.loggedUser, this.barbearias});
+  const ListagemBarbearia({this.loggedUser, this.barbearias, this.minhasBarbearias});
 
   @override
   State<StatefulWidget> createState() {
@@ -33,13 +35,20 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
                     Barbearia barbearia =
                         await BarbeariaApi.findCompleteBarbeariaPorBarbeariaId(
                             widget.barbearias[i].id);
-                    Navigator.of(context).push(new MaterialPageRoute(
+                    !widget.minhasBarbearias ? Navigator.of(context).push(new MaterialPageRoute(
                         builder: (BuildContext context) => new PaginaBarbearia(
                             barbearia: barbearia,
                             open: true,
                             sucesso: true,
                             loggedUser: widget.loggedUser,
-                            mensagem: "")));
+                            mensagem: ""))) : Navigator.of(context).push(new MaterialPageRoute(
+                        builder: (BuildContext context) => new MinhaBarbearia(
+                            barbearia: barbearia,
+                            barbeiro: widget.loggedUser.barbeiro,
+                            open: true,
+                            sucesso: true,
+                            loggedUser: widget.loggedUser,
+                            mensagem: ""))); 
                   },
                   child: new Card(
                     margin: EdgeInsets.fromLTRB(0, 2, 0, 2),
@@ -62,31 +71,6 @@ class _ListagemBarebeariaState extends State<ListagemBarbearia> {
                                 ),
                               ],
                             ),
-                            // Column(
-                            //   children: <Widget>[
-                            //     Padding(
-                            //       padding: const EdgeInsets.all(8.0),
-                            //       child: ButtonTheme(
-                            //         buttonColor: Colors.white,
-                            //         minWidth: 10.0,
-                            //         child: RaisedButton(
-                            //             onPressed: () {
-                            //               Navigator.of(context).push(
-                            //                   new MaterialPageRoute(
-                            //                       builder: (BuildContext
-                            //                               context) =>
-                            //                           new PaginaBarbearia()));
-                            //             },
-                            //             child: Icon(
-                            //               Icons.exit_to_app,
-                            //               size: 30.0,
-                            //               color: Colors.grey,
-                            //             ),
-                            //           ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
                           ],
                         ),
                         Column(
